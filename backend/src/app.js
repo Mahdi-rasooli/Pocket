@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const incomeRoutes = require('./routes/incomeRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const statsRoutes = require('./routes/statsRoutes');
+const goalRoutes = require('./routes/goalRoutes');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/income', incomeRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/goals', goalRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
