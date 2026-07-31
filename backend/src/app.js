@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const incomeRoutes = require('./routes/incomeRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/income', incomeRoutes);
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/stats', statsRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
