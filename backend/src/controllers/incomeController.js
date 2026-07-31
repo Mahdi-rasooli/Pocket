@@ -1,0 +1,83 @@
+const IncomeEntry = require('../models/IncomeEntry');
+
+async function list(req, res) {
+  const entries = await IncomeEntry.find({ userId: req.userId }).sort({ startDate: -1 });
+  res.json(entries);
+}
+
+async function create(req, res) {
+  const { amount, source, type, startDate, endDate, note } = req.body;
+  if (amount == null || !source || !type || !startDate) {
+    return res.status(400).json({ error: 'amount, source, type, and startDate are required' });
+  }
+  if (!['recurring', 'one-time'].includes(type)) {
+    return res.status(400).json({ error: 'type must be "recurring" or "one-time"' });
+  }
+
+  const entry = await IncomeEntry.create({
+    userId: req.userId,
+    amount,
+    source,
+    type,
+    startDate,
+    endDate: endDate || null,
+    note: note || '',
+  });
+  res.status(201).json(entry);
+}
+
+// Represents a raise/change to a recurring entry: deactivates the old entry
+// as of the effective date and creates a new entry, preserving history.
+async function replace(req, res) {
+  const { id } = req.params;
+  const { amount, source, effectiveDate, note } = req.body;
+  if (amount == null || !effectiveDate) {
+    return res.status(400).json({ error: 'amount and effectiveDate are required' });
+  }
+
+  const previous = await IncomeEntry.findOne({ _id: id, userId: req.userId });
+  if (!previous) {
+    return res.status(404).json({ error: 'Income entry not found' });
+  }
+
+  previous.endDate = effectiveDate;
+  previous.isActive = false;
+  await previous.save();
+
+  const next = await IncomeEntry.create({
+    userId: req.userId,
+    amount,
+    source: source || previous.source,
+    type: previous.type,
+    startDate: effectiveDate,
+    endDate: null,
+    isActive: true,
+    note: note || '',
+  });
+
+  res.status(201).json({ previous, next });
+}
+
+async function deactivate(req, res) {
+  const { id } = req.params;
+  const entry = await IncomeEntry.findOneAndUpdate(
+    { _id: id, userId: req.userId },
+    { isActive: false, endDate: req.body.endDate || new Date() },
+    { new: true }
+  );
+  if (!entry) {
+    return res.status(404).json({ error: 'Income entry not found' });
+  }
+  res.json(entry);
+}
+
+async function remove(req, res) {
+  const { id } = req.params;
+  const entry = await IncomeEntry.findOneAndDelete({ _id: id, userId: req.userId });
+  if (!entry) {
+    return res.status(404).json({ error: 'Income entry not found' });
+  }
+  res.status(204).send();
+}
+
+module.exports = { list, create, replace, deactivate, remove };
