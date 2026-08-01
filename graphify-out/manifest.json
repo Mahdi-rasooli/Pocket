@@ -1,0 +1,282 @@
+{
+  "backend/package.json": {
+    "mtime": 1785499205.1465926,
+    "ast_hash": "9b61e1dcb5e3a62b566b6b1d7df67b54",
+    "semantic_hash": "9b61e1dcb5e3a62b566b6b1d7df67b54"
+  },
+  "backend/src/app.js": {
+    "mtime": 1785499731.647819,
+    "ast_hash": "a248e3ebba34c6584ce0f20eb9b86220",
+    "semantic_hash": "a248e3ebba34c6584ce0f20eb9b86220"
+  },
+  "backend/src/config/db.js": {
+    "mtime": 1785499276.865817,
+    "ast_hash": "dd0ceea90bc4206fe61de25db0a07606",
+    "semantic_hash": "dd0ceea90bc4206fe61de25db0a07606"
+  },
+  "backend/src/controllers/authController.js": {
+    "mtime": 1785499329.2664683,
+    "ast_hash": "d676a4f6649d19367714f6e736e3ec17",
+    "semantic_hash": "d676a4f6649d19367714f6e736e3ec17"
+  },
+  "backend/src/controllers/expenseController.js": {
+    "mtime": 1785499453.4130337,
+    "ast_hash": "a5bba9deffa73e81a5c414d14d033098",
+    "semantic_hash": "a5bba9deffa73e81a5c414d14d033098"
+  },
+  "backend/src/controllers/goalController.js": {
+    "mtime": 1785499711.1795647,
+    "ast_hash": "ac634a96c8ff51bb4844c54eaa773d16",
+    "semantic_hash": "ac634a96c8ff51bb4844c54eaa773d16"
+  },
+  "backend/src/controllers/incomeController.js": {
+    "mtime": 1785499362.9242132,
+    "ast_hash": "68ab2396beafcd9c79350e21c897b67a",
+    "semantic_hash": "68ab2396beafcd9c79350e21c897b67a"
+  },
+  "backend/src/controllers/statsController.js": {
+    "mtime": 1785499591.4260914,
+    "ast_hash": "1ce218af457628b0d0acd65a1e0662fb",
+    "semantic_hash": "1ce218af457628b0d0acd65a1e0662fb"
+  },
+  "backend/src/middleware/asyncHandler.js": {
+    "mtime": 1785499341.0431547,
+    "ast_hash": "34a8c867e661ab2f55ea723ee39e0f46",
+    "semantic_hash": "34a8c867e661ab2f55ea723ee39e0f46"
+  },
+  "backend/src/middleware/auth.js": {
+    "mtime": 1785499320.0213494,
+    "ast_hash": "7cd5239d036292efd483288fb1002ea7",
+    "semantic_hash": "7cd5239d036292efd483288fb1002ea7"
+  },
+  "backend/src/models/ExpenseEntry.js": {
+    "mtime": 1785499302.4668493,
+    "ast_hash": "f7be781f6bb34c7a40049ad69e1659fa",
+    "semantic_hash": "f7be781f6bb34c7a40049ad69e1659fa"
+  },
+  "backend/src/models/Goal.js": {
+    "mtime": 1785499311.2875757,
+    "ast_hash": "6b473b4ed820df192027d482ad4aa990",
+    "semantic_hash": "6b473b4ed820df192027d482ad4aa990"
+  },
+  "backend/src/models/IncomeEntry.js": {
+    "mtime": 1785499293.647817,
+    "ast_hash": "5762ece163526e97a2aad6bcf5f92bed",
+    "semantic_hash": "5762ece163526e97a2aad6bcf5f92bed"
+  },
+  "backend/src/models/User.js": {
+    "mtime": 1785499285.5548036,
+    "ast_hash": "0af4bc8574b37e849a2c93608211da72",
+    "semantic_hash": "0af4bc8574b37e849a2c93608211da72"
+  },
+  "backend/src/routes/authRoutes.js": {
+    "mtime": 1785499349.3875792,
+    "ast_hash": "f8f53aed3f5dcd84966e05b3fe64f09f",
+    "semantic_hash": "f8f53aed3f5dcd84966e05b3fe64f09f"
+  },
+  "backend/src/routes/expenseRoutes.js": {
+    "mtime": 1785499463.0298052,
+    "ast_hash": "bd14678316462be93442f613e93a7bc6",
+    "semantic_hash": "bd14678316462be93442f613e93a7bc6"
+  },
+  "backend/src/routes/goalRoutes.js": {
+    "mtime": 1785499718.5172808,
+    "ast_hash": "d2a2e6943c47becce72183d8e5f5a00e",
+    "semantic_hash": "d2a2e6943c47becce72183d8e5f5a00e"
+  },
+  "backend/src/routes/incomeRoutes.js": {
+    "mtime": 1785499438.70559,
+    "ast_hash": "fdf9174aa9bb1b5d516feee59fb9f5ac",
+    "semantic_hash": "fdf9174aa9bb1b5d516feee59fb9f5ac"
+  },
+  "backend/src/routes/statsRoutes.js": {
+    "mtime": 1785499599.5571158,
+    "ast_hash": "764f3276a7423f24dd4cb69c95190c92",
+    "semantic_hash": "764f3276a7423f24dd4cb69c95190c92"
+  },
+  "backend/src/server.js": {
+    "mtime": 1785499479.0871317,
+    "ast_hash": "78db3b3ea109280c3cf06aea13ec2afb",
+    "semantic_hash": "78db3b3ea109280c3cf06aea13ec2afb"
+  },
+  "backend/src/services/projections.js": {
+    "mtime": 1785499682.0468338,
+    "ast_hash": "46a6745c2a276c67c5d135ae754d992b",
+    "semantic_hash": "46a6745c2a276c67c5d135ae754d992b"
+  },
+  "backend/src/services/statsService.js": {
+    "mtime": 1785499581.6100056,
+    "ast_hash": "716cf6e6f66db9c9edf2e49319e99719",
+    "semantic_hash": "716cf6e6f66db9c9edf2e49319e99719"
+  },
+  "backend/src/services/suggestions.js": {
+    "mtime": 1785499696.1334667,
+    "ast_hash": "33308075b5b07320a5ab15e79903526b",
+    "semantic_hash": "33308075b5b07320a5ab15e79903526b"
+  },
+  "frontend/next-env.d.ts": {
+    "mtime": 1785501087.3622024,
+    "ast_hash": "187b4b5b507c358a018aeeadd81abe57",
+    "semantic_hash": "187b4b5b507c358a018aeeadd81abe57"
+  },
+  "frontend/next.config.mjs": {
+    "mtime": 1785499825.992975,
+    "ast_hash": "21958f5752add43cc47ab0ff5172cd46",
+    "semantic_hash": "21958f5752add43cc47ab0ff5172cd46"
+  },
+  "frontend/package.json": {
+    "mtime": 1785500189.1359055,
+    "ast_hash": "86a1c88a87d7cdb8b8090c9d7ee4f127",
+    "semantic_hash": "86a1c88a87d7cdb8b8090c9d7ee4f127"
+  },
+  "frontend/postcss.config.js": {
+    "mtime": 1785499847.3349276,
+    "ast_hash": "8640f9b2e6475cc3f5b1ff4548925765",
+    "semantic_hash": "8640f9b2e6475cc3f5b1ff4548925765"
+  },
+  "frontend/src/app/(app)/dashboard/page.tsx": {
+    "mtime": 1785608722.284786,
+    "ast_hash": "e48b82446371a817272d3552c23ad746",
+    "semantic_hash": "e48b82446371a817272d3552c23ad746"
+  },
+  "frontend/src/app/(app)/goals/page.tsx": {
+    "mtime": 1785609332.5483422,
+    "ast_hash": "348801f6c2fcbdca8cf5d4170b9d40d1",
+    "semantic_hash": "348801f6c2fcbdca8cf5d4170b9d40d1"
+  },
+  "frontend/src/app/(app)/layout.tsx": {
+    "mtime": 1785608573.3206432,
+    "ast_hash": "4e23f5726180b08c4ac4f7adef9da948",
+    "semantic_hash": "4e23f5726180b08c4ac4f7adef9da948"
+  },
+  "frontend/src/app/(app)/transactions/page.tsx": {
+    "mtime": 1785609145.1874387,
+    "ast_hash": "644991e2ec141ee65232280e076e6909",
+    "semantic_hash": "644991e2ec141ee65232280e076e6909"
+  },
+  "frontend/src/app/layout.tsx": {
+    "mtime": 1785499940.3442783,
+    "ast_hash": "7d78c38e21009428514600885db9f2a1",
+    "semantic_hash": "7d78c38e21009428514600885db9f2a1"
+  },
+  "frontend/src/app/login/page.tsx": {
+    "mtime": 1785499972.9983892,
+    "ast_hash": "10e9f46f92b7c485cf5d589f145977f5",
+    "semantic_hash": "10e9f46f92b7c485cf5d589f145977f5"
+  },
+  "frontend/src/app/page.tsx": {
+    "mtime": 1785499948.6715465,
+    "ast_hash": "b138460d47cd44bcf353550fad33849f",
+    "semantic_hash": "b138460d47cd44bcf353550fad33849f"
+  },
+  "frontend/src/app/register/page.tsx": {
+    "mtime": 1785499982.1432066,
+    "ast_hash": "06ee247bf2a8a86e8a2ef43144ed0bdc",
+    "semantic_hash": "06ee247bf2a8a86e8a2ef43144ed0bdc"
+  },
+  "frontend/src/components/AuthForm.tsx": {
+    "mtime": 1785499965.088977,
+    "ast_hash": "06e864723a21586447dc4d790eb80bf6",
+    "semantic_hash": "06e864723a21586447dc4d790eb80bf6"
+  },
+  "frontend/src/components/CategoryDonut.tsx": {
+    "mtime": 1785608685.450542,
+    "ast_hash": "f944ba68033b617712d477f22c390005",
+    "semantic_hash": "f944ba68033b617712d477f22c390005"
+  },
+  "frontend/src/components/CountUp.tsx": {
+    "mtime": 1785608600.6248982,
+    "ast_hash": "47dbf8280b204fafe72326eb47ea8d54",
+    "semantic_hash": "47dbf8280b204fafe72326eb47ea8d54"
+  },
+  "frontend/src/components/ExpenseForm.tsx": {
+    "mtime": 1785609085.597902,
+    "ast_hash": "59540690a13672bf11554c3173229226",
+    "semantic_hash": "59540690a13672bf11554c3173229226"
+  },
+  "frontend/src/components/GoalForm.tsx": {
+    "mtime": 1785609299.8317654,
+    "ast_hash": "b78c70a7a785564cbbc5101ef9ab8f73",
+    "semantic_hash": "b78c70a7a785564cbbc5101ef9ab8f73"
+  },
+  "frontend/src/components/GoalProgressCard.tsx": {
+    "mtime": 1785608695.4648702,
+    "ast_hash": "a7f4c260947641b665476cd6ebc9a24d",
+    "semantic_hash": "a7f4c260947641b665476cd6ebc9a24d"
+  },
+  "frontend/src/components/IncomeForm.tsx": {
+    "mtime": 1785609100.6830802,
+    "ast_hash": "ec7353eebc2cff433d9a24be3666789a",
+    "semantic_hash": "ec7353eebc2cff433d9a24be3666789a"
+  },
+  "frontend/src/components/ProjectionsPanel.tsx": {
+    "mtime": 1785609362.8376389,
+    "ast_hash": "f2f39bbbb4179847aa365351754c49cc",
+    "semantic_hash": "f2f39bbbb4179847aa365351754c49cc"
+  },
+  "frontend/src/components/RaiseForm.tsx": {
+    "mtime": 1785609116.557387,
+    "ast_hash": "7bd7c5b638314bd7a8a9b07d9fef7da7",
+    "semantic_hash": "7bd7c5b638314bd7a8a9b07d9fef7da7"
+  },
+  "frontend/src/components/Sidebar.tsx": {
+    "mtime": 1785608580.6837778,
+    "ast_hash": "b5ceaf0b0c9dab006091dc6db70604d6",
+    "semantic_hash": "b5ceaf0b0c9dab006091dc6db70604d6"
+  },
+  "frontend/src/components/StatCard.tsx": {
+    "mtime": 1785608618.654777,
+    "ast_hash": "268c59c1dd1b0a7375b039c40643d658",
+    "semantic_hash": "268c59c1dd1b0a7375b039c40643d658"
+  },
+  "frontend/src/components/SuggestionsPanel.tsx": {
+    "mtime": 1785608704.7339423,
+    "ast_hash": "c17a50719c138c189f4e3e65ea92e317",
+    "semantic_hash": "c17a50719c138c189f4e3e65ea92e317"
+  },
+  "frontend/src/components/TrendChart.tsx": {
+    "mtime": 1785608629.8385572,
+    "ast_hash": "55e2bf16db7107e48406db4fa6070c49",
+    "semantic_hash": "55e2bf16db7107e48406db4fa6070c49"
+  },
+  "frontend/src/lib/api.ts": {
+    "mtime": 1785499903.9961784,
+    "ast_hash": "de745c2a8e6ec041688cee733bef6a6e",
+    "semantic_hash": "de745c2a8e6ec041688cee733bef6a6e"
+  },
+  "frontend/src/lib/auth-context.tsx": {
+    "mtime": 1785499931.3416183,
+    "ast_hash": "9e9e98c41711186a188a23086bd1bbaa",
+    "semantic_hash": "9e9e98c41711186a188a23086bd1bbaa"
+  },
+  "frontend/src/lib/format.ts": {
+    "mtime": 1785608591.9240036,
+    "ast_hash": "0498d530532bad14a2b9232abd6dcc76",
+    "semantic_hash": "0498d530532bad14a2b9232abd6dcc76"
+  },
+  "frontend/src/lib/types.ts": {
+    "mtime": 1785499915.7080302,
+    "ast_hash": "6f3acfa753e8c0584051dd24a663579f",
+    "semantic_hash": "6f3acfa753e8c0584051dd24a663579f"
+  },
+  "frontend/tailwind.config.ts": {
+    "mtime": 1785499864.9710667,
+    "ast_hash": "23639c4ee47dc8697f624876b97623fd",
+    "semantic_hash": "23639c4ee47dc8697f624876b97623fd"
+  },
+  "frontend/tsconfig.json": {
+    "mtime": 1785499814.6642737,
+    "ast_hash": "b7ef4c7bf2a5e75e33097a76362a22ee",
+    "semantic_hash": "b7ef4c7bf2a5e75e33097a76362a22ee"
+  },
+  "README.md": {
+    "mtime": 1785609947.404693,
+    "ast_hash": "c3d4771dca5f7f2848183cd3cd4d59d8",
+    "semantic_hash": "c3d4771dca5f7f2848183cd3cd4d59d8"
+  },
+  "docker-compose.yml": {
+    "mtime": 1785609602.8922565,
+    "ast_hash": "b60b0d02af890fffaec5a574d0eb5443",
+    "semantic_hash": "b60b0d02af890fffaec5a574d0eb5443"
+  }
+}

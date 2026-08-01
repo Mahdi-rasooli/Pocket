@@ -8,3 +8,8 @@ build/
 .DS_Store
 coverage/
 *.tsbuildinfo
+
+# graphify: keep the portable graph outputs, drop machine-local cache/interpreter paths
+graphify-out/cache/
+graphify-out/.graphify_python
+graphify-out/.graphify_root
