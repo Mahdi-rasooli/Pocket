@@ -6,6 +6,7 @@ import type { Goal } from '@/lib/types';
 import { formatCurrency } from '@/lib/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 16 },
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export default function GoalProgressCard({ goal, currentSaved, onClick, active }: Props) {
+  const { t } = useI18n();
   const pct = goal.targetAmount > 0 ? Math.min((currentSaved / goal.targetAmount) * 100, 100) : 0;
 
   return (
@@ -47,7 +49,7 @@ export default function GoalProgressCard({ goal, currentSaved, onClick, active }
             />
           </div>
           <p className="text-xs text-muted-foreground">
-            {formatCurrency(currentSaved)} of {formatCurrency(goal.targetAmount)}
+            {formatCurrency(currentSaved)} {t('goals.of')} {formatCurrency(goal.targetAmount)}
           </p>
         </CardContent>
       </Card>

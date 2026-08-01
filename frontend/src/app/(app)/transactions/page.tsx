@@ -11,6 +11,7 @@ import ExpenseForm from '@/components/ExpenseForm';
 import RaiseForm from '@/components/RaiseForm';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
 const cardVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } };
@@ -20,6 +21,7 @@ function formatDate(d: string) {
 }
 
 export default function TransactionsPage() {
+  const { t } = useI18n();
   const [income, setIncome] = useState<IncomeEntry[]>([]);
   const [expenses, setExpenses] = useState<ExpenseEntry[]>([]);
   const [raiseTargetId, setRaiseTargetId] = useState<string | null>(null);
@@ -63,14 +65,14 @@ export default function TransactionsPage() {
   }
 
   if (loading) {
-    return <div className="text-sm text-muted-foreground">Loading transactions…</div>;
+    return <div className="text-sm text-muted-foreground">{t('transactions.loading')}</div>;
   }
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Transactions</h1>
-        <p className="text-sm text-muted-foreground">Log income and expenses. Raises are recorded as new entries, preserving history.</p>
+        <h1 className="text-2xl font-semibold">{t('transactions.title')}</h1>
+        <p className="text-sm text-muted-foreground">{t('transactions.subtitle')}</p>
       </div>
 
       <motion.div variants={cardVariants}>
@@ -78,19 +80,19 @@ export default function TransactionsPage() {
           <CardContent className="pt-6">
             <div className="flex items-center gap-2 mb-4">
               <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
-              <p className="font-medium">Income</p>
+              <p className="font-medium">{t('transactions.income')}</p>
             </div>
             <IncomeForm onSubmit={addIncome} />
             <div className="mt-5 space-y-2">
-              {income.length === 0 && <p className="text-sm text-muted-foreground">No income logged yet.</p>}
+              {income.length === 0 && <p className="text-sm text-muted-foreground">{t('transactions.noIncome')}</p>}
               {income.map((entry) => (
                 <div key={entry._id} className="border-b border-surface-border last:border-0 py-2">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm">
                         <span className="font-medium">{formatCurrency(entry.amount)}</span>
-                        <span className="text-muted-foreground"> · {entry.source} · {entry.type}</span>
-                        {!entry.isActive && <span className="text-muted-foreground"> · inactive</span>}
+                        <span className="text-muted-foreground"> · {entry.source} · {entry.type === 'recurring' ? t('form.recurring') : t('form.oneTime')}</span>
+                        {!entry.isActive && <span className="text-muted-foreground"> · {t('transactions.inactive')}</span>}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {formatDate(entry.startDate)}{entry.endDate ? ` → ${formatDate(entry.endDate)}` : ''}
@@ -105,7 +107,7 @@ export default function TransactionsPage() {
                           className="h-auto p-0 text-xs text-brand"
                           onClick={() => setRaiseTargetId(raiseTargetId === entry._id ? null : entry._id)}
                         >
-                          Log a raise
+                          {t('transactions.logARaise')}
                         </Button>
                       )}
                       <Button
@@ -137,17 +139,17 @@ export default function TransactionsPage() {
           <CardContent className="pt-6">
             <div className="flex items-center gap-2 mb-4">
               <div className="bg-red-500/15 text-red-400 p-1.5 rounded-lg"><TrendingDown size={16} /></div>
-              <p className="font-medium">Expenses</p>
+              <p className="font-medium">{t('transactions.expenses')}</p>
             </div>
             <ExpenseForm onSubmit={addExpense} />
             <div className="mt-5 space-y-2">
-              {expenses.length === 0 && <p className="text-sm text-muted-foreground">No expenses logged yet.</p>}
+              {expenses.length === 0 && <p className="text-sm text-muted-foreground">{t('transactions.noExpenses')}</p>}
               {expenses.map((entry) => (
                 <div key={entry._id} className="flex items-center justify-between gap-3 border-b border-surface-border last:border-0 py-2">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm">
                       <span className="font-medium">{formatCurrency(entry.amount)}</span>
-                      <span className="text-muted-foreground"> · {formatCategory(entry.category)}</span>
+                      <span className="text-muted-foreground"> · {formatCategory(entry.category, t)}</span>
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {formatDate(entry.date)}{entry.note && ` · ${entry.note}`}

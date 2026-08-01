@@ -7,12 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface Props {
   onSubmit: (data: { amount: number; source: string; type: IncomeType; startDate: string; note: string }) => Promise<void>;
 }
 
 export default function IncomeForm({ onSubmit }: Props) {
+  const { t } = useI18n();
   const [amount, setAmount] = useState('');
   const [source, setSource] = useState('');
   const [type, setType] = useState<IncomeType>('recurring');
@@ -36,35 +38,35 @@ export default function IncomeForm({ onSubmit }: Props) {
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-2 sm:grid-cols-6 gap-3 items-end">
       <div className="col-span-1 space-y-1.5">
-        <Label className="text-xs text-muted-foreground">Amount</Label>
+        <Label className="text-xs text-muted-foreground">{t('form.amount')}</Label>
         <Input type="number" min="0" step="0.01" required value={amount} onChange={(e) => setAmount(e.target.value)} />
       </div>
       <div className="col-span-1 space-y-1.5">
-        <Label className="text-xs text-muted-foreground">Source</Label>
+        <Label className="text-xs text-muted-foreground">{t('form.source')}</Label>
         <Input required value={source} onChange={(e) => setSource(e.target.value)} />
       </div>
       <div className="col-span-1 space-y-1.5">
-        <Label className="text-xs text-muted-foreground">Type</Label>
+        <Label className="text-xs text-muted-foreground">{t('form.type')}</Label>
         <Select value={type} onValueChange={(v) => setType(v as IncomeType)}>
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="recurring">Recurring</SelectItem>
-            <SelectItem value="one-time">One-time</SelectItem>
+            <SelectItem value="recurring">{t('form.recurring')}</SelectItem>
+            <SelectItem value="one-time">{t('form.oneTime')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div className="col-span-1 space-y-1.5">
-        <Label className="text-xs text-muted-foreground">Start date</Label>
+        <Label className="text-xs text-muted-foreground">{t('form.startDate')}</Label>
         <Input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       </div>
       <div className="col-span-1 space-y-1.5">
-        <Label className="text-xs text-muted-foreground">Note</Label>
+        <Label className="text-xs text-muted-foreground">{t('form.note')}</Label>
         <Input value={note} onChange={(e) => setNote(e.target.value)} />
       </div>
       <Button type="submit" disabled={submitting}>
-        <Plus size={16} /> Add
+        <Plus size={16} /> {t('form.add')}
       </Button>
     </form>
   );

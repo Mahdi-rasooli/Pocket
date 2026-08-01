@@ -5,11 +5,13 @@ import { TrendingUp, LineChart as LineChartIcon, GitBranch, Scissors } from 'luc
 import type { GoalProjections } from '@/lib/types';
 import { formatCurrency, formatCategory } from '@/lib/format';
 import { Card, CardContent } from '@/components/ui/card';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 const cardVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } };
 
-function ProjectionRow({ label, monthsRemaining, etaDate, monthlySavingsRate }: {
+function ProjectionRow({ label, monthsRemaining, etaDate, monthlySavingsRate, notAvailable, monthUnit }: {
   label: string; monthsRemaining: number | null; etaDate: string | null; monthlySavingsRate: number;
+  notAvailable: string; monthUnit: string;
 }) {
   return (
     <div className="flex items-center justify-between py-2 border-b border-surface-border last:border-0">
@@ -18,7 +20,7 @@ function ProjectionRow({ label, monthsRemaining, etaDate, monthlySavingsRate }: 
         <p className="text-xs text-muted-foreground">{formatCurrency(monthlySavingsRate)}/mo</p>
       </div>
       <p className="text-sm font-medium text-right">
-        {monthsRemaining != null ? `${monthsRemaining} mo` : 'N/A'}
+        {monthsRemaining != null ? `${monthsRemaining} ${monthUnit}` : notAvailable}
         {etaDate && <span className="block text-xs text-muted-foreground">{etaDate}</span>}
       </p>
     </div>
@@ -26,7 +28,10 @@ function ProjectionRow({ label, monthsRemaining, etaDate, monthlySavingsRate }: 
 }
 
 export default function ProjectionsPanel({ projections }: { projections: GoalProjections }) {
+  const { t } = useI18n();
   const { averageRate, weightedTrend, bestWorstCase, categoryCuts } = projections;
+  const notAvailable = t('projections.notAvailable');
+  const monthUnit = t('projections.month');
 
   return (
     <motion.div variants={cardVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -34,9 +39,16 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
         <CardContent className="pt-6">
           <div className="flex items-center gap-2 mb-2">
             <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
-            <p className="text-sm text-muted-foreground">Average savings rate</p>
+            <p className="text-sm text-muted-foreground">{t('projections.averageRate')}</p>
           </div>
-          <ProjectionRow {...averageRate} />
+          <ProjectionRow
+            label={t('projections.averageRate')}
+            monthsRemaining={averageRate.monthsRemaining}
+            etaDate={averageRate.etaDate}
+            monthlySavingsRate={averageRate.monthlySavingsRate}
+            notAvailable={notAvailable}
+            monthUnit={monthUnit}
+          />
         </CardContent>
       </Card>
 
@@ -44,9 +56,16 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
         <CardContent className="pt-6">
           <div className="flex items-center gap-2 mb-2">
             <div className="bg-sky-500/15 text-sky-400 p-1.5 rounded-lg"><LineChartIcon size={16} /></div>
-            <p className="text-sm text-muted-foreground">Weighted recent-trend</p>
+            <p className="text-sm text-muted-foreground">{t('projections.weightedTrend')}</p>
           </div>
-          <ProjectionRow {...weightedTrend} />
+          <ProjectionRow
+            label={t('projections.weightedTrend')}
+            monthsRemaining={weightedTrend.monthsRemaining}
+            etaDate={weightedTrend.etaDate}
+            monthlySavingsRate={weightedTrend.monthlySavingsRate}
+            notAvailable={notAvailable}
+            monthUnit={monthUnit}
+          />
         </CardContent>
       </Card>
 
@@ -56,9 +75,23 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
             <div className="bg-purple-500/15 text-purple-400 p-1.5 rounded-lg"><GitBranch size={16} /></div>
             <p className="text-sm text-muted-foreground">{bestWorstCase.label}</p>
           </div>
-          <ProjectionRow label="Optimistic" {...bestWorstCase.optimistic} />
-          <ProjectionRow label="Pessimistic" {...bestWorstCase.pessimistic} />
-          <p className="text-xs text-muted-foreground mt-2">± {formatCurrency(bestWorstCase.monthlySavingsStdDev)}/mo variance</p>
+          <ProjectionRow
+            label={t('projections.optimistic')}
+            monthsRemaining={bestWorstCase.optimistic.monthsRemaining}
+            etaDate={bestWorstCase.optimistic.etaDate}
+            monthlySavingsRate={bestWorstCase.optimistic.monthlySavingsRate}
+            notAvailable={notAvailable}
+            monthUnit={monthUnit}
+          />
+          <ProjectionRow
+            label={t('projections.pessimistic')}
+            monthsRemaining={bestWorstCase.pessimistic.monthsRemaining}
+            etaDate={bestWorstCase.pessimistic.etaDate}
+            monthlySavingsRate={bestWorstCase.pessimistic.monthlySavingsRate}
+            notAvailable={notAvailable}
+            monthUnit={monthUnit}
+          />
+          <p className="text-xs text-muted-foreground mt-2">± {formatCurrency(bestWorstCase.monthlySavingsStdDev)}/mo {t('projections.variance')}</p>
         </CardContent>
       </Card>
 
@@ -66,21 +99,21 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
         <CardContent className="pt-6">
           <div className="flex items-center gap-2 mb-2">
             <div className="bg-amber-500/15 text-amber-400 p-1.5 rounded-lg"><Scissors size={16} /></div>
-            <p className="text-sm text-muted-foreground">Category-cut suggestions</p>
+            <p className="text-sm text-muted-foreground">{t('projections.categoryCuts')}</p>
           </div>
           {categoryCuts.length > 0 ? categoryCuts.map((c) => (
             <div key={c.category} className="flex items-center justify-between py-2 border-b border-surface-border last:border-0">
               <div>
-                <p className="text-sm">{formatCategory(c.category)}</p>
-                <p className="text-xs text-muted-foreground">cut {c.cutPercent}% · avg {formatCurrency(c.avgMonthlySpend)}/mo</p>
+                <p className="text-sm">{formatCategory(c.category, t)}</p>
+                <p className="text-xs text-muted-foreground">{t('projections.cut')} {c.cutPercent}% · {t('projections.avg')} {formatCurrency(c.avgMonthlySpend)}/mo</p>
               </div>
               <p className="text-sm font-medium text-right">
-                {c.newMonthsRemaining} mo
-                {c.monthsSaved != null && <span className="block text-xs text-brand">-{c.monthsSaved} mo</span>}
+                {c.newMonthsRemaining} {monthUnit}
+                {c.monthsSaved != null && <span className="block text-xs text-brand">-{c.monthsSaved} {monthUnit}</span>}
               </p>
             </div>
           )) : (
-            <p className="text-sm text-muted-foreground">No discretionary spending detected yet.</p>
+            <p className="text-sm text-muted-foreground">{t('projections.noDiscretionary')}</p>
           )}
         </CardContent>
       </Card>

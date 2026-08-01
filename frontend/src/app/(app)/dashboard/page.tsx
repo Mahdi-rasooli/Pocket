@@ -12,6 +12,7 @@ import TrendChart from '@/components/TrendChart';
 import CategoryDonut from '@/components/CategoryDonut';
 import GoalProgressCard from '@/components/GoalProgressCard';
 import SuggestionsPanel from '@/components/SuggestionsPanel';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface DailySummary {
   date: string;
@@ -25,6 +26,7 @@ const containerVariants = {
 };
 
 export default function DashboardPage() {
+  const { t } = useI18n();
   const [daily, setDaily] = useState<DailySummary | null>(null);
   const [monthly, setMonthly] = useState<MonthlySummary | null>(null);
   const [trend, setTrend] = useState<MonthlySummary[]>([]);
@@ -58,20 +60,20 @@ export default function DashboardPage() {
   }, []);
 
   if (loading) {
-    return <div className="text-sm text-muted-foreground">Loading your dashboard…</div>;
+    return <div className="text-sm text-muted-foreground">{t('dashboard.loading')}</div>;
   }
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">Today's snapshot and where your money is headed.</p>
+        <h1 className="text-2xl font-semibold">{t('dashboard.title')}</h1>
+        <p className="text-sm text-muted-foreground">{t('dashboard.subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard label="Earned today" value={daily?.totalIncome ?? 0} icon={TrendingUp} tone="brand" />
-        <StatCard label="Spent today" value={daily?.totalExpenses ?? 0} icon={TrendingDown} tone="red" />
-        <StatCard label="Net this month" value={monthly?.netSavings ?? 0} icon={Wallet} tone="blue" />
+        <StatCard label={t('dashboard.earnedToday')} value={daily?.totalIncome ?? 0} icon={TrendingUp} tone="brand" />
+        <StatCard label={t('dashboard.spentToday')} value={daily?.totalExpenses ?? 0} icon={TrendingDown} tone="red" />
+        <StatCard label={t('dashboard.netThisMonth')} value={monthly?.netSavings ?? 0} icon={Wallet} tone="blue" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

@@ -5,16 +5,19 @@ import { usePathname } from 'next/navigation';
 import { LayoutDashboard, PiggyBank, Wallet, LogOut, ArrowLeftRight } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import ThemeToggle from '@/components/ThemeToggle';
-
-const links = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/transactions', label: 'Transactions', icon: ArrowLeftRight },
-  { href: '/goals', label: 'Goals', icon: PiggyBank },
-];
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { t } = useI18n();
+
+  const links = [
+    { href: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
+    { href: '/transactions', label: t('nav.transactions'), icon: ArrowLeftRight },
+    { href: '/goals', label: t('nav.goals'), icon: PiggyBank },
+  ];
 
   return (
     <aside className="w-full md:w-56 md:min-h-screen border-b md:border-b-0 md:border-r border-surface-border px-4 py-5 flex md:flex-col justify-between">
@@ -43,18 +46,19 @@ export default function Sidebar() {
           })}
         </nav>
       </div>
-      <div className="hidden md:block px-2">
-        <p className="text-xs text-muted-foreground mb-2 truncate">{user?.name}</p>
+      <div className="hidden md:block px-2 space-y-3">
         <div className="flex items-center justify-between">
-          <button
-            onClick={logout}
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-red-400 transition-colors"
-          >
-            <LogOut size={16} />
-            Log out
-          </button>
+          <LanguageSwitcher />
           <ThemeToggle />
         </div>
+        <p className="text-xs text-muted-foreground truncate">{user?.name}</p>
+        <button
+          onClick={logout}
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-red-400 transition-colors"
+        >
+          <LogOut size={16} />
+          {t('nav.logout')}
+        </button>
       </div>
     </aside>
   );

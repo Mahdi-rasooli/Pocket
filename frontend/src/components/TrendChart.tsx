@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import type { MonthlySummary } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -13,6 +14,7 @@ const cardVariants = {
 };
 
 export default function TrendChart({ data }: { data: MonthlySummary[] }) {
+  const { t } = useI18n();
   const chartData = data.map((m) => ({
     name: MONTHS[m.month - 1],
     Income: m.totalIncome,
@@ -23,7 +25,7 @@ export default function TrendChart({ data }: { data: MonthlySummary[] }) {
     <motion.div variants={cardVariants}>
       <Card>
         <CardContent className="pt-6">
-          <p className="text-sm text-muted-foreground mb-4">Income vs. expenses</p>
+          <p className="text-sm text-muted-foreground mb-4">{t('dashboard.trendTitle')}</p>
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />

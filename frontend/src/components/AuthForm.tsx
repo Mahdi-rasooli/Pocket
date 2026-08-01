@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface Props {
   mode: 'login' | 'register';
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function AuthForm({ mode, onSubmit }: Props) {
+  const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -29,7 +31,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
     try {
       await onSubmit(email, password, mode === 'register' ? name : undefined);
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Something went wrong');
+      setError(err instanceof ApiError ? err.message : t('auth.genericError'));
     } finally {
       setSubmitting(false);
     }
@@ -49,27 +51,27 @@ export default function AuthForm({ mode, onSubmit }: Props) {
               <div className="bg-brand/15 text-brand p-2 rounded-xl">
                 <Wallet size={22} />
               </div>
-              <h1 className="text-xl font-semibold">Pocket</h1>
+              <h1 className="text-xl font-semibold">{t('auth.appName')}</h1>
             </div>
 
-            <h2 className="text-lg font-medium mb-1">{mode === 'login' ? 'Welcome back' : 'Create your account'}</h2>
+            <h2 className="text-lg font-medium mb-1">{mode === 'login' ? t('auth.welcomeBack') : t('auth.createAccount')}</h2>
             <p className="text-sm text-muted-foreground mb-6">
-              {mode === 'login' ? 'Log in to see your finances.' : 'Start tracking your money in minutes.'}
+              {mode === 'login' ? t('auth.loginSubtitle') : t('auth.registerSubtitle')}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === 'register' && (
                 <div className="space-y-1.5">
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name">{t('auth.name')}</Label>
                   <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
                 </div>
               )}
               <div className="space-y-1.5">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('auth.email')}</Label>
                 <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t('auth.password')}</Label>
                 <Input
                   id="password"
                   type="password"
@@ -83,15 +85,15 @@ export default function AuthForm({ mode, onSubmit }: Props) {
               {error && <p className="text-sm text-destructive">{error}</p>}
 
               <Button type="submit" disabled={submitting} className="w-full">
-                {submitting ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Register'}
+                {submitting ? t('auth.pleaseWait') : mode === 'login' ? t('auth.login') : t('auth.register')}
               </Button>
             </form>
 
             <p className="text-sm text-muted-foreground mt-6 text-center">
               {mode === 'login' ? (
-                <>Don&apos;t have an account? <Link href="/register" className="text-brand hover:underline">Register</Link></>
+                <>{t('auth.noAccount')} <Link href="/register" className="text-brand hover:underline">{t('auth.register')}</Link></>
               ) : (
-                <>Already have an account? <Link href="/login" className="text-brand hover:underline">Log in</Link></>
+                <>{t('auth.haveAccount')} <Link href="/login" className="text-brand hover:underline">{t('auth.login')}</Link></>
               )}
             </p>
           </CardContent>
