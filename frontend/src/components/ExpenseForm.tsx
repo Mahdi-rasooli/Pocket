@@ -38,14 +38,14 @@ export default function ExpenseForm({ onSubmit }: Props) {
         <input
           type="number" min="0" step="0.01" required value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <div className="col-span-1">
         <label className="block text-xs text-gray-400 mb-1">Category</label>
         <select
           value={category} onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         >
           {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
@@ -54,19 +54,19 @@ export default function ExpenseForm({ onSubmit }: Props) {
         <label className="block text-xs text-gray-400 mb-1">Date</label>
         <input
           type="date" required value={date} onChange={(e) => setDate(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <div className="col-span-1">
         <label className="block text-xs text-gray-400 mb-1">Note</label>
         <input
           value={note} onChange={(e) => setNote(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <button
         type="submit" disabled={submitting}
-        className="flex items-center justify-center gap-1 bg-accent hover:bg-accent-dark transition-colors text-black font-medium rounded-lg py-2 text-sm disabled:opacity-60"
+        className="flex items-center justify-center gap-1 bg-brand hover:bg-brand-dark transition-colors text-black font-medium rounded-lg py-2 text-sm disabled:opacity-60"
       >
         <Plus size={16} /> Add
       </button>

@@ -73,7 +73,7 @@ export default function GoalsPage() {
 
       <motion.div variants={cardVariants} className="card">
         <div className="flex items-center gap-2 mb-4">
-          <div className="bg-accent/15 text-accent p-1.5 rounded-lg"><PiggyBank size={16} /></div>
+          <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><PiggyBank size={16} /></div>
           <p className="font-medium">New goal</p>
         </div>
         <GoalForm onSubmit={createGoal} />

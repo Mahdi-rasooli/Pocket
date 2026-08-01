@@ -73,7 +73,7 @@ export default function TransactionsPage() {
 
       <motion.div variants={cardVariants} className="card">
         <div className="flex items-center gap-2 mb-4">
-          <div className="bg-accent/15 text-accent p-1.5 rounded-lg"><TrendingUp size={16} /></div>
+          <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
           <p className="font-medium">Income</p>
         </div>
         <IncomeForm onSubmit={addIncome} />
@@ -97,7 +97,7 @@ export default function TransactionsPage() {
                   {entry.type === 'recurring' && entry.isActive && (
                     <button
                       onClick={() => setRaiseTargetId(raiseTargetId === entry._id ? null : entry._id)}
-                      className="text-xs text-accent hover:underline"
+                      className="text-xs text-brand hover:underline"
                     >
                       Log a raise
                     </button>

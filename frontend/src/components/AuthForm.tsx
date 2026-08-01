@@ -40,7 +40,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
         className="card w-full max-w-sm"
       >
         <div className="flex items-center gap-2 mb-6">
-          <div className="bg-accent/15 text-accent p-2 rounded-xl">
+          <div className="bg-brand/15 text-brand p-2 rounded-xl">
             <Wallet size={22} />
           </div>
           <h1 className="text-xl font-semibold">Pocket</h1>
@@ -56,7 +56,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
             <div>
               <label className="block text-sm text-gray-400 mb-1">Name</label>
               <input
-                className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 outline-none focus:border-accent"
+                className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 outline-none focus:border-brand"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -67,7 +67,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
             <label className="block text-sm text-gray-400 mb-1">Email</label>
             <input
               type="email"
-              className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 outline-none focus:border-accent"
+              className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 outline-none focus:border-brand"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -77,7 +77,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
             <label className="block text-sm text-gray-400 mb-1">Password</label>
             <input
               type="password"
-              className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 outline-none focus:border-accent"
+              className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 outline-none focus:border-brand"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -90,7 +90,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-accent hover:bg-accent-dark transition-colors text-black font-medium rounded-lg py-2 disabled:opacity-60"
+            className="w-full bg-brand hover:bg-brand-dark transition-colors text-black font-medium rounded-lg py-2 disabled:opacity-60"
           >
             {submitting ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Register'}
           </button>
@@ -98,9 +98,9 @@ export default function AuthForm({ mode, onSubmit }: Props) {
 
         <p className="text-sm text-gray-400 mt-6 text-center">
           {mode === 'login' ? (
-            <>Don&apos;t have an account? <Link href="/register" className="text-accent hover:underline">Register</Link></>
+            <>Don&apos;t have an account? <Link href="/register" className="text-brand hover:underline">Register</Link></>
           ) : (
-            <>Already have an account? <Link href="/login" className="text-accent hover:underline">Log in</Link></>
+            <>Already have an account? <Link href="/login" className="text-brand hover:underline">Log in</Link></>
           )}
         </p>
       </motion.div>

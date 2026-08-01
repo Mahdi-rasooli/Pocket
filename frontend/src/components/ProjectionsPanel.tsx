@@ -31,7 +31,7 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
     <motion.div variants={cardVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="card">
         <div className="flex items-center gap-2 mb-2">
-          <div className="bg-accent/15 text-accent p-1.5 rounded-lg"><TrendingUp size={16} /></div>
+          <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
           <p className="text-sm text-gray-400">Average savings rate</p>
         </div>
         <ProjectionRow {...averageRate} />
@@ -68,7 +68,7 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
             </div>
             <p className="text-sm font-medium text-right">
               {c.newMonthsRemaining} mo
-              {c.monthsSaved != null && <span className="block text-xs text-accent">-{c.monthsSaved} mo</span>}
+              {c.monthsSaved != null && <span className="block text-xs text-brand">-{c.monthsSaved} mo</span>}
             </p>
           </div>
         )) : (

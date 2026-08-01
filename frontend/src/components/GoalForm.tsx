@@ -33,7 +33,7 @@ export default function GoalForm({ onSubmit }: Props) {
         <input
           required value={name} onChange={(e) => setName(e.target.value)}
           placeholder="Buy a car"
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <div>
@@ -41,19 +41,19 @@ export default function GoalForm({ onSubmit }: Props) {
         <input
           type="number" min="0" step="0.01" required value={targetAmount}
           onChange={(e) => setTargetAmount(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <div>
         <label className="block text-xs text-gray-400 mb-1">Target date (optional)</label>
         <input
           type="date" value={targetDate} onChange={(e) => setTargetDate(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <button
         type="submit" disabled={submitting}
-        className="flex items-center justify-center gap-1 bg-accent hover:bg-accent-dark transition-colors text-black font-medium rounded-lg py-2 text-sm disabled:opacity-60"
+        className="flex items-center justify-center gap-1 bg-brand hover:bg-brand-dark transition-colors text-black font-medium rounded-lg py-2 text-sm disabled:opacity-60"
       >
         <Plus size={16} /> Create goal
       </button>

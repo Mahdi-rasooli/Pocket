@@ -36,21 +36,21 @@ export default function IncomeForm({ onSubmit }: Props) {
         <input
           type="number" min="0" step="0.01" required value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <div className="col-span-1">
         <label className="block text-xs text-gray-400 mb-1">Source</label>
         <input
           required value={source} onChange={(e) => setSource(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <div className="col-span-1">
         <label className="block text-xs text-gray-400 mb-1">Type</label>
         <select
           value={type} onChange={(e) => setType(e.target.value as IncomeType)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         >
           <option value="recurring">Recurring</option>
           <option value="one-time">One-time</option>
@@ -60,19 +60,19 @@ export default function IncomeForm({ onSubmit }: Props) {
         <label className="block text-xs text-gray-400 mb-1">Start date</label>
         <input
           type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <div className="col-span-1">
         <label className="block text-xs text-gray-400 mb-1">Note</label>
         <input
           value={note} onChange={(e) => setNote(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
+          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
       <button
         type="submit" disabled={submitting}
-        className="flex items-center justify-center gap-1 bg-accent hover:bg-accent-dark transition-colors text-black font-medium rounded-lg py-2 text-sm disabled:opacity-60"
+        className="flex items-center justify-center gap-1 bg-brand hover:bg-brand-dark transition-colors text-black font-medium rounded-lg py-2 text-sm disabled:opacity-60"
       >
         <Plus size={16} /> Add
       </button>

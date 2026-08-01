@@ -69,7 +69,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard label="Earned today" value={daily?.totalIncome ?? 0} icon={TrendingUp} tone="accent" />
+        <StatCard label="Earned today" value={daily?.totalIncome ?? 0} icon={TrendingUp} tone="brand" />
         <StatCard label="Spent today" value={daily?.totalExpenses ?? 0} icon={TrendingDown} tone="red" />
         <StatCard label="Net this month" value={monthly?.netSavings ?? 0} icon={Wallet} tone="blue" />
       </div>

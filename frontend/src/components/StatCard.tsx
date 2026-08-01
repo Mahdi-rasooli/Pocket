@@ -8,11 +8,11 @@ interface Props {
   label: string;
   value: number;
   icon: LucideIcon;
-  tone?: 'accent' | 'red' | 'blue';
+  tone?: 'brand' | 'red' | 'blue';
 }
 
 const toneClasses: Record<string, string> = {
-  accent: 'bg-accent/15 text-accent',
+  brand: 'bg-brand/15 text-brand',
   red: 'bg-red-500/15 text-red-400',
   blue: 'bg-sky-500/15 text-sky-400',
 };
@@ -22,7 +22,7 @@ const cardVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function StatCard({ label, value, icon: Icon, tone = 'accent' }: Props) {
+export default function StatCard({ label, value, icon: Icon, tone = 'brand' }: Props) {
   return (
     <motion.div variants={cardVariants} className="card">
       <div className="flex items-center justify-between mb-4">

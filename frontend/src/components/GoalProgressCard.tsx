@@ -24,11 +24,11 @@ export default function GoalProgressCard({ goal, currentSaved, onClick, active }
     <motion.div
       variants={cardVariants}
       onClick={onClick}
-      className={`card ${onClick ? 'cursor-pointer transition-colors' : ''} ${active ? 'border-accent' : ''}`}
+      className={`card ${onClick ? 'cursor-pointer transition-colors' : ''} ${active ? 'border-brand' : ''}`}
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className="bg-accent/15 text-accent p-1.5 rounded-lg">
+          <div className="bg-brand/15 text-brand p-1.5 rounded-lg">
             <Target size={16} />
           </div>
           <p className="font-medium">{goal.name}</p>
@@ -40,7 +40,7 @@ export default function GoalProgressCard({ goal, currentSaved, onClick, active }
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="h-full bg-accent rounded-full"
+          className="h-full bg-brand rounded-full"
         />
       </div>
       <p className="text-xs text-gray-400">

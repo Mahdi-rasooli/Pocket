@@ -12,7 +12,7 @@ export default function SuggestionsPanel({ suggestions }: { suggestions: string[
   return (
     <motion.div variants={cardVariants} className="card">
       <div className="flex items-center gap-2 mb-4">
-        <div className="bg-accent/15 text-accent p-1.5 rounded-lg">
+        <div className="bg-brand/15 text-brand p-1.5 rounded-lg">
           <Sparkles size={16} />
         </div>
         <p className="text-sm text-gray-400">Suggestions</p>
@@ -21,7 +21,7 @@ export default function SuggestionsPanel({ suggestions }: { suggestions: string[
         <ul className="space-y-3">
           {suggestions.map((s, i) => (
             <li key={i} className="text-sm text-gray-200 leading-relaxed flex gap-2">
-              <span className="text-accent">•</span>
+              <span className="text-brand">•</span>
               <span>{s}</span>
             </li>
           ))}
