@@ -3,6 +3,10 @@
 import { useState, FormEvent } from 'react';
 import { Plus } from 'lucide-react';
 import type { IncomeType } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Props {
   onSubmit: (data: { amount: number; source: string; type: IncomeType; startDate: string; note: string }) => Promise<void>;
@@ -31,51 +35,37 @@ export default function IncomeForm({ onSubmit }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-2 sm:grid-cols-6 gap-3 items-end">
-      <div className="col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Amount</label>
-        <input
-          type="number" min="0" step="0.01" required value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        />
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Amount</Label>
+        <Input type="number" min="0" step="0.01" required value={amount} onChange={(e) => setAmount(e.target.value)} />
       </div>
-      <div className="col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Source</label>
-        <input
-          required value={source} onChange={(e) => setSource(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        />
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Source</Label>
+        <Input required value={source} onChange={(e) => setSource(e.target.value)} />
       </div>
-      <div className="col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Type</label>
-        <select
-          value={type} onChange={(e) => setType(e.target.value as IncomeType)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        >
-          <option value="recurring">Recurring</option>
-          <option value="one-time">One-time</option>
-        </select>
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Type</Label>
+        <Select value={type} onValueChange={(v) => setType(v as IncomeType)}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="recurring">Recurring</SelectItem>
+            <SelectItem value="one-time">One-time</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-      <div className="col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Start date</label>
-        <input
-          type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        />
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Start date</Label>
+        <Input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       </div>
-      <div className="col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Note</label>
-        <input
-          value={note} onChange={(e) => setNote(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        />
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Note</Label>
+        <Input value={note} onChange={(e) => setNote(e.target.value)} />
       </div>
-      <button
-        type="submit" disabled={submitting}
-        className="flex items-center justify-center gap-1 bg-brand hover:bg-brand-dark transition-colors text-black font-medium rounded-lg py-2 text-sm disabled:opacity-60"
-      >
+      <Button type="submit" disabled={submitting}>
         <Plus size={16} /> Add
-      </button>
+      </Button>
     </form>
   );
 }

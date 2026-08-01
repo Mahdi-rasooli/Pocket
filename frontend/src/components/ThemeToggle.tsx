@@ -12,7 +12,7 @@ export default function ThemeToggle() {
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
-    return <Button variant="ghost" size="icon" className="text-gray-400" disabled><Sun size={16} /></Button>;
+    return <Button variant="ghost" size="icon" className="text-muted-foreground" disabled><Sun size={16} /></Button>;
   }
 
   const isDark = theme === 'dark';
@@ -21,7 +21,7 @@ export default function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      className="text-gray-400 hover:text-foreground"
+      className="text-muted-foreground hover:text-foreground"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       aria-label="Toggle theme"
     >

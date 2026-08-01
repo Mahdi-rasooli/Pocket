@@ -9,6 +9,7 @@ import GoalForm from '@/components/GoalForm';
 import GoalProgressCard from '@/components/GoalProgressCard';
 import ProjectionsPanel from '@/components/ProjectionsPanel';
 import SuggestionsPanel from '@/components/SuggestionsPanel';
+import { Card, CardContent } from '@/components/ui/card';
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
 const cardVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } };
@@ -61,26 +62,30 @@ export default function GoalsPage() {
   }
 
   if (loading) {
-    return <div className="text-sm text-gray-500">Loading goals…</div>;
+    return <div className="text-sm text-muted-foreground">Loading goals…</div>;
   }
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Goals</h1>
-        <p className="text-sm text-gray-400">Set a savings goal and see algorithm-driven projections for when you'll get there.</p>
+        <p className="text-sm text-muted-foreground">Set a savings goal and see algorithm-driven projections for when you'll get there.</p>
       </div>
 
-      <motion.div variants={cardVariants} className="card">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><PiggyBank size={16} /></div>
-          <p className="font-medium">New goal</p>
-        </div>
-        <GoalForm onSubmit={createGoal} />
+      <motion.div variants={cardVariants}>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><PiggyBank size={16} /></div>
+              <p className="font-medium">New goal</p>
+            </div>
+            <GoalForm onSubmit={createGoal} />
+          </CardContent>
+        </Card>
       </motion.div>
 
       {goals.length === 0 ? (
-        <p className="text-sm text-gray-500">No goals yet — create one above to see projections.</p>
+        <p className="text-sm text-muted-foreground">No goals yet — create one above to see projections.</p>
       ) : (
         <>
           <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -95,7 +100,7 @@ export default function GoalsPage() {
             ))}
           </motion.div>
 
-          {projectionsLoading && <p className="text-sm text-gray-500">Calculating projections…</p>}
+          {projectionsLoading && <p className="text-sm text-muted-foreground">Calculating projections…</p>}
           {!projectionsLoading && projections && (
             <>
               <ProjectionsPanel projections={projections} />

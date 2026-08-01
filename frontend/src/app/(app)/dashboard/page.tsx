@@ -58,14 +58,14 @@ export default function DashboardPage() {
   }, []);
 
   if (loading) {
-    return <div className="text-sm text-gray-500">Loading your dashboard…</div>;
+    return <div className="text-sm text-muted-foreground">Loading your dashboard…</div>;
   }
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <p className="text-sm text-gray-400">Today's snapshot and where your money is headed.</p>
+        <p className="text-sm text-muted-foreground">Today's snapshot and where your money is headed.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

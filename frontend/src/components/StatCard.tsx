@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 import CountUp from './CountUp';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface Props {
   label: string;
@@ -24,16 +25,20 @@ const cardVariants = {
 
 export default function StatCard({ label, value, icon: Icon, tone = 'brand' }: Props) {
   return (
-    <motion.div variants={cardVariants} className="card">
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-gray-400">{label}</p>
-        <div className={`p-2 rounded-lg ${toneClasses[tone]}`}>
-          <Icon size={18} />
-        </div>
-      </div>
-      <p className="text-2xl font-semibold tracking-tight">
-        <CountUp value={value} />
-      </p>
+    <motion.div variants={cardVariants}>
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-sm text-muted-foreground">{label}</p>
+            <div className={`p-2 rounded-lg ${toneClasses[tone]}`}>
+              <Icon size={18} />
+            </div>
+          </div>
+          <p className="text-2xl font-semibold tracking-tight">
+            <CountUp value={value} />
+          </p>
+        </CardContent>
+      </Card>
     </motion.div>
   );
 }

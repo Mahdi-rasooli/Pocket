@@ -5,6 +5,10 @@ import { motion } from 'framer-motion';
 import { Wallet } from 'lucide-react';
 import Link from 'next/link';
 import { ApiError } from '@/lib/api';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface Props {
   mode: 'login' | 'register';
@@ -37,72 +41,61 @@ export default function AuthForm({ mode, onSubmit }: Props) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="card w-full max-w-sm"
+        className="w-full max-w-sm"
       >
-        <div className="flex items-center gap-2 mb-6">
-          <div className="bg-brand/15 text-brand p-2 rounded-xl">
-            <Wallet size={22} />
-          </div>
-          <h1 className="text-xl font-semibold">Pocket</h1>
-        </div>
-
-        <h2 className="text-lg font-medium mb-1">{mode === 'login' ? 'Welcome back' : 'Create your account'}</h2>
-        <p className="text-sm text-gray-400 mb-6">
-          {mode === 'login' ? 'Log in to see your finances.' : 'Start tracking your money in minutes.'}
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {mode === 'register' && (
-            <div>
-              <label className="block text-sm text-gray-400 mb-1">Name</label>
-              <input
-                className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 outline-none focus:border-brand"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="bg-brand/15 text-brand p-2 rounded-xl">
+                <Wallet size={22} />
+              </div>
+              <h1 className="text-xl font-semibold">Pocket</h1>
             </div>
-          )}
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">Email</label>
-            <input
-              type="email"
-              className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 outline-none focus:border-brand"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">Password</label>
-            <input
-              type="password"
-              className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 outline-none focus:border-brand"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-            />
-          </div>
 
-          {error && <p className="text-sm text-red-400">{error}</p>}
+            <h2 className="text-lg font-medium mb-1">{mode === 'login' ? 'Welcome back' : 'Create your account'}</h2>
+            <p className="text-sm text-muted-foreground mb-6">
+              {mode === 'login' ? 'Log in to see your finances.' : 'Start tracking your money in minutes.'}
+            </p>
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-brand hover:bg-brand-dark transition-colors text-black font-medium rounded-lg py-2 disabled:opacity-60"
-          >
-            {submitting ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Register'}
-          </button>
-        </form>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {mode === 'register' && (
+                <div className="space-y-1.5">
+                  <Label htmlFor="name">Name</Label>
+                  <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+                </div>
+              )}
+              <div className="space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                />
+              </div>
 
-        <p className="text-sm text-gray-400 mt-6 text-center">
-          {mode === 'login' ? (
-            <>Don&apos;t have an account? <Link href="/register" className="text-brand hover:underline">Register</Link></>
-          ) : (
-            <>Already have an account? <Link href="/login" className="text-brand hover:underline">Log in</Link></>
-          )}
-        </p>
+              {error && <p className="text-sm text-destructive">{error}</p>}
+
+              <Button type="submit" disabled={submitting} className="w-full">
+                {submitting ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Register'}
+              </Button>
+            </form>
+
+            <p className="text-sm text-muted-foreground mt-6 text-center">
+              {mode === 'login' ? (
+                <>Don&apos;t have an account? <Link href="/register" className="text-brand hover:underline">Register</Link></>
+              ) : (
+                <>Already have an account? <Link href="/login" className="text-brand hover:underline">Log in</Link></>
+              )}
+            </p>
+          </CardContent>
+        </Card>
       </motion.div>
     </div>
   );

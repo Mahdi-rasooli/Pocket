@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import type { MonthlySummary } from '@/lib/types';
+import { Card, CardContent } from '@/components/ui/card';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -19,21 +20,30 @@ export default function TrendChart({ data }: { data: MonthlySummary[] }) {
   }));
 
   return (
-    <motion.div variants={cardVariants} className="card">
-      <p className="text-sm text-gray-400 mb-4">Income vs. expenses</p>
-      <ResponsiveContainer width="100%" height={260}>
-        <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#232833" />
-          <XAxis dataKey="name" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
-          <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} width={40} />
-          <Tooltip
-            contentStyle={{ background: '#161a21', border: '1px solid #232833', borderRadius: 8, fontSize: 13 }}
-            labelStyle={{ color: '#e5e7eb' }}
-          />
-          <Line type="monotone" dataKey="Income" stroke="#10b981" strokeWidth={2} dot={false} />
-          <Line type="monotone" dataKey="Expenses" stroke="#f87171" strokeWidth={2} dot={false} />
-        </LineChart>
-      </ResponsiveContainer>
+    <motion.div variants={cardVariants}>
+      <Card>
+        <CardContent className="pt-6">
+          <p className="text-sm text-muted-foreground mb-4">Income vs. expenses</p>
+          <ResponsiveContainer width="100%" height={260}>
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
+              <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} width={40} />
+              <Tooltip
+                contentStyle={{
+                  background: 'hsl(var(--popover))',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: 8,
+                  fontSize: 13,
+                }}
+                labelStyle={{ color: 'hsl(var(--popover-foreground))' }}
+              />
+              <Line type="monotone" dataKey="Income" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="Expenses" stroke="#f87171" strokeWidth={2} dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
     </motion.div>
   );
 }

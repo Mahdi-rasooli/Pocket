@@ -2,6 +2,9 @@
 
 import { useState, FormEvent } from 'react';
 import { TrendingUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface Props {
   currentAmount: number;
@@ -28,34 +31,28 @@ export default function RaiseForm({ currentAmount, onSubmit, onCancel }: Props) 
   return (
     <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-2 bg-surface border border-surface-border rounded-lg p-3 mt-2">
       <TrendingUp size={16} className="text-brand mb-2" />
-      <div>
-        <label className="block text-xs text-gray-400 mb-1">New amount</label>
-        <input
+      <div className="space-y-1.5">
+        <Label className="text-xs text-muted-foreground">New amount</Label>
+        <Input
           type="number" min="0" step="0.01" required value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="w-28 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 text-sm outline-none focus:border-brand"
+          className="w-28"
         />
       </div>
-      <div>
-        <label className="block text-xs text-gray-400 mb-1">Effective date</label>
-        <input
-          type="date" required value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)}
-          className="bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 text-sm outline-none focus:border-brand"
-        />
+      <div className="space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Effective date</Label>
+        <Input type="date" required value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} />
       </div>
-      <div>
-        <label className="block text-xs text-gray-400 mb-1">Note</label>
-        <input
-          value={note} onChange={(e) => setNote(e.target.value)}
-          className="bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 text-sm outline-none focus:border-brand"
-        />
+      <div className="space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Note</Label>
+        <Input value={note} onChange={(e) => setNote(e.target.value)} />
       </div>
-      <button type="submit" disabled={submitting} className="bg-brand hover:bg-brand-dark transition-colors text-black font-medium rounded-lg px-3 py-1.5 text-sm disabled:opacity-60">
+      <Button type="submit" disabled={submitting} size="sm">
         {submitting ? 'Saving…' : 'Confirm raise'}
-      </button>
-      <button type="button" onClick={onCancel} className="text-gray-400 hover:text-gray-200 text-sm px-2 py-1.5">
+      </Button>
+      <Button type="button" variant="ghost" size="sm" onClick={onCancel} className="text-muted-foreground">
         Cancel
-      </button>
+      </Button>
     </form>
   );
 }

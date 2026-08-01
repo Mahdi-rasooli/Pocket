@@ -2,6 +2,9 @@
 
 import { useState, FormEvent } from 'react';
 import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface Props {
   onSubmit: (data: { name: string; targetAmount: number; targetDate: string | null }) => Promise<void>;
@@ -28,35 +31,24 @@ export default function GoalForm({ onSubmit }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-2 sm:grid-cols-4 gap-3 items-end">
-      <div className="col-span-2 sm:col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Goal name</label>
-        <input
-          required value={name} onChange={(e) => setName(e.target.value)}
-          placeholder="Buy a car"
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        />
+      <div className="col-span-2 sm:col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Goal name</Label>
+        <Input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Buy a car" />
       </div>
-      <div>
-        <label className="block text-xs text-gray-400 mb-1">Target amount</label>
-        <input
+      <div className="space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Target amount</Label>
+        <Input
           type="number" min="0" step="0.01" required value={targetAmount}
           onChange={(e) => setTargetAmount(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
         />
       </div>
-      <div>
-        <label className="block text-xs text-gray-400 mb-1">Target date (optional)</label>
-        <input
-          type="date" value={targetDate} onChange={(e) => setTargetDate(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        />
+      <div className="space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Target date (optional)</Label>
+        <Input type="date" value={targetDate} onChange={(e) => setTargetDate(e.target.value)} />
       </div>
-      <button
-        type="submit" disabled={submitting}
-        className="flex items-center justify-center gap-1 bg-brand hover:bg-brand-dark transition-colors text-black font-medium rounded-lg py-2 text-sm disabled:opacity-60"
-      >
+      <Button type="submit" disabled={submitting}>
         <Plus size={16} /> Create goal
-      </button>
+      </Button>
     </form>
   );
 }

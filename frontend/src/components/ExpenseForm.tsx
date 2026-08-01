@@ -3,6 +3,10 @@
 import { useState, FormEvent } from 'react';
 import { Plus } from 'lucide-react';
 import type { ExpenseCategory } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const CATEGORIES: ExpenseCategory[] = [
   'housing', 'food', 'dining', 'transport', 'entertainment', 'shopping', 'health', 'utilities', 'other',
@@ -33,43 +37,32 @@ export default function ExpenseForm({ onSubmit }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-2 sm:grid-cols-5 gap-3 items-end">
-      <div className="col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Amount</label>
-        <input
-          type="number" min="0" step="0.01" required value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        />
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Amount</Label>
+        <Input type="number" min="0" step="0.01" required value={amount} onChange={(e) => setAmount(e.target.value)} />
       </div>
-      <div className="col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Category</label>
-        <select
-          value={category} onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        >
-          {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-        </select>
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Category</Label>
+        <Select value={category} onValueChange={(v) => setCategory(v as ExpenseCategory)}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {CATEGORIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+          </SelectContent>
+        </Select>
       </div>
-      <div className="col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Date</label>
-        <input
-          type="date" required value={date} onChange={(e) => setDate(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        />
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Date</Label>
+        <Input type="date" required value={date} onChange={(e) => setDate(e.target.value)} />
       </div>
-      <div className="col-span-1">
-        <label className="block text-xs text-gray-400 mb-1">Note</label>
-        <input
-          value={note} onChange={(e) => setNote(e.target.value)}
-          className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm outline-none focus:border-brand"
-        />
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">Note</Label>
+        <Input value={note} onChange={(e) => setNote(e.target.value)} />
       </div>
-      <button
-        type="submit" disabled={submitting}
-        className="flex items-center justify-center gap-1 bg-brand hover:bg-brand-dark transition-colors text-black font-medium rounded-lg py-2 text-sm disabled:opacity-60"
-      >
+      <Button type="submit" disabled={submitting}>
         <Plus size={16} /> Add
-      </button>
+      </Button>
     </form>
   );
 }

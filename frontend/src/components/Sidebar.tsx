@@ -33,7 +33,7 @@ export default function Sidebar() {
                 key={href}
                 href={href}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                  active ? 'bg-brand/15 text-brand' : 'text-gray-400 hover:bg-surface-card hover:text-gray-100'
+                  active ? 'bg-brand/15 text-brand' : 'text-muted-foreground hover:bg-surface-card hover:text-foreground'
                 }`}
               >
                 <Icon size={18} />
@@ -44,11 +44,11 @@ export default function Sidebar() {
         </nav>
       </div>
       <div className="hidden md:block px-2">
-        <p className="text-xs text-gray-500 mb-2 truncate">{user?.name}</p>
+        <p className="text-xs text-muted-foreground mb-2 truncate">{user?.name}</p>
         <div className="flex items-center justify-between">
           <button
             onClick={logout}
-            className="flex items-center gap-2 text-sm text-gray-400 hover:text-red-400 transition-colors"
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-red-400 transition-colors"
           >
             <LogOut size={16} />
             Log out

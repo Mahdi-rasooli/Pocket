@@ -9,6 +9,8 @@ import { formatCurrency, formatCategory } from '@/lib/format';
 import IncomeForm from '@/components/IncomeForm';
 import ExpenseForm from '@/components/ExpenseForm';
 import RaiseForm from '@/components/RaiseForm';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
 const cardVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } };
@@ -61,89 +63,109 @@ export default function TransactionsPage() {
   }
 
   if (loading) {
-    return <div className="text-sm text-gray-500">Loading transactions…</div>;
+    return <div className="text-sm text-muted-foreground">Loading transactions…</div>;
   }
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Transactions</h1>
-        <p className="text-sm text-gray-400">Log income and expenses. Raises are recorded as new entries, preserving history.</p>
+        <p className="text-sm text-muted-foreground">Log income and expenses. Raises are recorded as new entries, preserving history.</p>
       </div>
 
-      <motion.div variants={cardVariants} className="card">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
-          <p className="font-medium">Income</p>
-        </div>
-        <IncomeForm onSubmit={addIncome} />
-        <div className="mt-5 space-y-2">
-          {income.length === 0 && <p className="text-sm text-gray-500">No income logged yet.</p>}
-          {income.map((entry) => (
-            <div key={entry._id} className="border-b border-surface-border last:border-0 py-2">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm">
-                    <span className="font-medium">{formatCurrency(entry.amount)}</span>
-                    <span className="text-gray-400"> · {entry.source} · {entry.type}</span>
-                    {!entry.isActive && <span className="text-gray-500"> · inactive</span>}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {formatDate(entry.startDate)}{entry.endDate ? ` → ${formatDate(entry.endDate)}` : ''}
-                    {entry.note && ` · ${entry.note}`}
-                  </p>
-                </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  {entry.type === 'recurring' && entry.isActive && (
-                    <button
-                      onClick={() => setRaiseTargetId(raiseTargetId === entry._id ? null : entry._id)}
-                      className="text-xs text-brand hover:underline"
-                    >
-                      Log a raise
-                    </button>
-                  )}
-                  <button onClick={() => deleteIncome(entry._id)} className="text-gray-500 hover:text-red-400 transition-colors">
-                    <Trash2 size={15} />
-                  </button>
-                </div>
-              </div>
-              {raiseTargetId === entry._id && (
-                <RaiseForm
-                  currentAmount={entry.amount}
-                  onCancel={() => setRaiseTargetId(null)}
-                  onSubmit={(data) => submitRaise(entry._id, data)}
-                />
-              )}
+      <motion.div variants={cardVariants}>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
+              <p className="font-medium">Income</p>
             </div>
-          ))}
-        </div>
+            <IncomeForm onSubmit={addIncome} />
+            <div className="mt-5 space-y-2">
+              {income.length === 0 && <p className="text-sm text-muted-foreground">No income logged yet.</p>}
+              {income.map((entry) => (
+                <div key={entry._id} className="border-b border-surface-border last:border-0 py-2">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm">
+                        <span className="font-medium">{formatCurrency(entry.amount)}</span>
+                        <span className="text-muted-foreground"> · {entry.source} · {entry.type}</span>
+                        {!entry.isActive && <span className="text-muted-foreground"> · inactive</span>}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatDate(entry.startDate)}{entry.endDate ? ` → ${formatDate(entry.endDate)}` : ''}
+                        {entry.note && ` · ${entry.note}`}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      {entry.type === 'recurring' && entry.isActive && (
+                        <Button
+                          variant="link"
+                          size="sm"
+                          className="h-auto p-0 text-xs text-brand"
+                          onClick={() => setRaiseTargetId(raiseTargetId === entry._id ? null : entry._id)}
+                        >
+                          Log a raise
+                        </Button>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-auto w-auto p-0 text-muted-foreground hover:text-red-400 hover:bg-transparent"
+                        onClick={() => deleteIncome(entry._id)}
+                      >
+                        <Trash2 size={15} />
+                      </Button>
+                    </div>
+                  </div>
+                  {raiseTargetId === entry._id && (
+                    <RaiseForm
+                      currentAmount={entry.amount}
+                      onCancel={() => setRaiseTargetId(null)}
+                      onSubmit={(data) => submitRaise(entry._id, data)}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
 
-      <motion.div variants={cardVariants} className="card">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="bg-red-500/15 text-red-400 p-1.5 rounded-lg"><TrendingDown size={16} /></div>
-          <p className="font-medium">Expenses</p>
-        </div>
-        <ExpenseForm onSubmit={addExpense} />
-        <div className="mt-5 space-y-2">
-          {expenses.length === 0 && <p className="text-sm text-gray-500">No expenses logged yet.</p>}
-          {expenses.map((entry) => (
-            <div key={entry._id} className="flex items-center justify-between gap-3 border-b border-surface-border last:border-0 py-2">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm">
-                  <span className="font-medium">{formatCurrency(entry.amount)}</span>
-                  <span className="text-gray-400"> · {formatCategory(entry.category)}</span>
-                </p>
-                <p className="text-xs text-gray-500">
-                  {formatDate(entry.date)}{entry.note && ` · ${entry.note}`}
-                </p>
-              </div>
-              <button onClick={() => deleteExpense(entry._id)} className="text-gray-500 hover:text-red-400 transition-colors shrink-0">
-                <Trash2 size={15} />
-              </button>
+      <motion.div variants={cardVariants}>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="bg-red-500/15 text-red-400 p-1.5 rounded-lg"><TrendingDown size={16} /></div>
+              <p className="font-medium">Expenses</p>
             </div>
-          ))}
-        </div>
+            <ExpenseForm onSubmit={addExpense} />
+            <div className="mt-5 space-y-2">
+              {expenses.length === 0 && <p className="text-sm text-muted-foreground">No expenses logged yet.</p>}
+              {expenses.map((entry) => (
+                <div key={entry._id} className="flex items-center justify-between gap-3 border-b border-surface-border last:border-0 py-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm">
+                      <span className="font-medium">{formatCurrency(entry.amount)}</span>
+                      <span className="text-muted-foreground"> · {formatCategory(entry.category)}</span>
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {formatDate(entry.date)}{entry.note && ` · ${entry.note}`}
+                    </p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-auto w-auto p-0 text-muted-foreground hover:text-red-400 hover:bg-transparent shrink-0"
+                    onClick={() => deleteExpense(entry._id)}
+                  >
+                    <Trash2 size={15} />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
     </motion.div>
   );
