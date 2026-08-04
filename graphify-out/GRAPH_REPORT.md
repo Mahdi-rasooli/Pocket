@@ -1,145 +1,167 @@
-# Graph Report - .  (2026-08-01)
+# Graph Report - .  (2026-08-04)
 
 ## Corpus Check
-- Corpus is ~9,547 words - fits in a single context window. You may not need a graph.
+- 47 files · ~15,519 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 330 nodes · 489 edges · 19 communities (16 shown, 3 thin omitted)
-- Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 40 edges (avg confidence: 0.52)
-- Token cost: 40,000 input · 5,487 output
+- 507 nodes · 862 edges · 27 communities (20 shown, 7 thin omitted)
+- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 42 edges (avg confidence: 0.53)
+- Token cost: 50,000 input · 5,103 output
 
 ## Community Hubs (Navigation)
-- Dashboard & Goals Display UI
-- Frontend TypeScript Config
-- Backend npm Dependencies
-- Auth Pages & API Client
-- Goal Controller & Suggestions
-- Frontend npm Dependencies
-- Stats Service, Docker & README
-- Transactions UI (Income/Expense Forms)
-- Auth Backend & Root Layout
-- Income Controller & Middleware
-- Expense Controller & Model
-- Frontend Dev Tooling
-- Backend App Entry & DB Config
-- Stats Controller & Routes
-- Goal Projection Algorithms
+- Dashboard/Goals/Transactions Pages
+- Frontend Form Components
+- Frontend Third-Party Dependencies
+- Goal Controller & Projections
+- Goal Algorithms & README Docs
+- Express App Setup
+- Frontend TS Config
+- Frontend Dev Dependencies
+- Backend Package Config
+- App Shell & Auth Pages
+- Auth Controller & User Model
+- shadcn/ui Components Config
+- Theme, Locale & Currency Providers
+- Income Controller & Auth Middleware
+- Stats Controller
+- Stats Service & Income Model
+- Dropdown Menu UI Primitive
+- README API & Model Docs
 - Next.js Config
 - Next.js Env Types
 - Tailwind Config
+- README Auth Routes Doc
+- README Expenses Routes Doc
+- README Stats Routes Doc
+- README User Model Doc
 
 ## God Nodes (most connected - your core abstractions)
-1. `compilerOptions` - 16 edges
-2. `formatCurrency()` - 12 edges
-3. `useAuth()` - 11 edges
-4. `computeProjections()` - 7 edges
-5. `formatCategory()` - 7 edges
-6. `apiFetch()` - 6 edges
-7. `projections()` - 5 edges
-8. `toUserId()` - 5 edges
-9. `average()` - 5 edges
-10. `bestWorstCaseRange()` - 5 edges
+1. `useI18n()` - 35 edges
+2. `cn()` - 21 edges
+3. `useCurrency()` - 18 edges
+4. `compilerOptions` - 16 edges
+5. `useAuth()` - 10 edges
+6. `Button` - 10 edges
+7. `Card` - 10 edges
+8. `CardContent` - 10 edges
+9. `projections.js` - 8 edges
+10. `computeProjections()` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `AuthProvider()` --indirect_call--> `register()`  [INFERRED]
-  frontend/src/lib/auth-context.tsx → backend/src/controllers/authController.js
-- `AuthProvider()` --indirect_call--> `login()`  [INFERRED]
-  frontend/src/lib/auth-context.tsx → backend/src/controllers/authController.js
-- `projections()` --calls--> `computeProjections()`  [EXTRACTED]
-  backend/src/controllers/goalController.js → backend/src/services/projections.js
-- `AppLayout()` --calls--> `useAuth()`  [EXTRACTED]
-  frontend/src/app/(app)/layout.tsx → frontend/src/lib/auth-context.tsx
-- `TransactionsPage()` --calls--> `formatCategory()`  [EXTRACTED]
-  frontend/src/app/(app)/transactions/page.tsx → frontend/src/lib/format.ts
+- `/dashboard route` --references--> `recharts`  [INFERRED]
+  README.md → frontend/package.json
+- `JWT auth` --references--> `bcryptjs`  [EXTRACTED]
+  README.md → backend/package.json
+- `DatePicker.tsx` --references--> `date-fns`  [EXTRACTED]
+  README.md → frontend/package.json
+- `DatePicker.tsx` --references--> `date-fns-jalali`  [EXTRACTED]
+  README.md → frontend/package.json
+- `ThemeToggle.tsx` --references--> `next-themes`  [EXTRACTED]
+  README.md → frontend/package.json
 
 ## Import Cycles
 - None detected.
 
 ## Hyperedges (group relationships)
-- **Four goal-projection algorithms implemented in projections.js** — backend_src_services_projections, readme_projection_average_savings_rate, readme_projection_weighted_recent_trend, readme_projection_best_worst_case_range, readme_projection_category_cut_suggestions [EXTRACTED 1.00]
-- **Docker Compose infra: backend + frontend containers, Atlas MongoDB stays external** — docker_compose, docker_dockerfile_backend, docker_dockerfile_frontend, mongodb_atlas [EXTRACTED 1.00]
+- **Localization system (language switch, RTL sync, dictionaries, hook)** — readme_localization, readme_i18n_dictionaries, readme_localehtmlsync_tsx, readme_languageswitcher_tsx, readme_usei18n_hook [EXTRACTED 1.00]
+- **Goal projection pipeline (stats -> algorithms -> suggestions -> API -> UI)** — readme_statsservice_js, readme_projections_js, readme_suggestions_js, readme_api_goals_routes, readme_goals_route [EXTRACTED 1.00]
+- **Expense category cross-file sync requirement** — readme_expenseentry_model, readme_format_ts, readme_i18n_dictionaries, readme_category_color_sync [EXTRACTED 1.00]
+- **Docker Compose infra: backend + frontend containers, Atlas MongoDB stays external** — docker_compose [EXTRACTED 1.00]
 
-## Communities (19 total, 3 thin omitted)
+## Communities (27 total, 7 thin omitted)
 
-### Community 0 - "Dashboard & Goals Display UI"
+### Community 0 - "Dashboard/Goals/Transactions Pages"
+Cohesion: 0.06
+Nodes (60): containerVariants, DailySummary, DashboardPage(), cardVariants, containerVariants, GoalsPage(), cardVariants, containerVariants (+52 more)
+
+### Community 1 - "Frontend Form Components"
 Cohesion: 0.08
-Nodes (31): containerVariants, DailySummary, cardVariants, containerVariants, cardVariants, CategoryDonut(), CountUp(), GoalForm() (+23 more)
+Nodes (39): Props, DatePicker(), GREGORIAN_LOCALES, Props, CATEGORIES, Props, Props, Props (+31 more)
 
-### Community 1 - "Frontend TypeScript Config"
+### Community 2 - "Frontend Third-Party Dependencies"
+Cohesion: 0.05
+Nodes (44): class-variance-authority, clsx, date-fns, date-fns-jalali, framer-motion, dependencies, class-variance-authority, clsx (+36 more)
+
+### Community 3 - "Goal Controller & Projections"
+Cohesion: 0.10
+Nodes (30): { buildSuggestions }, { computeProjections }, create(), Goal, list(), mongoose, projections(), remove() (+22 more)
+
+### Community 4 - "Goal Algorithms & README Docs"
+Cohesion: 0.06
+Nodes (34): bcryptjs, recharts, Goals API routes, auth-context.tsx, Average savings rate algorithm, Backend suggestion sentences not translated (known limitation), Best/worst-case range algorithm, Category-cut suggestions algorithm (+26 more)
+
+### Community 5 - "Express App Setup"
+Cohesion: 0.07
+Nodes (25): app, authRoutes, cors, expenseRoutes, express, goalRoutes, incomeRoutes, statsRoutes (+17 more)
+
+### Community 6 - "Frontend TS Config"
 Cohesion: 0.07
 Nodes (26): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+18 more)
 
-### Community 2 - "Backend npm Dependencies"
+### Community 7 - "Frontend Dev Dependencies"
 Cohesion: 0.08
-Nodes (24): dependencies, bcryptjs, cors, dotenv, express, jsonwebtoken, mongoose, devDependencies (+16 more)
+Nodes (23): autoprefixer, devDependencies, autoprefixer, postcss, tailwindcss, @types/node, @types/react, @types/react-dom (+15 more)
 
-### Community 3 - "Auth Pages & API Client"
-Cohesion: 0.15
-Nodes (16): AppLayout(), LoginPage(), Home(), RegisterPage(), AuthForm(), Props, links, Sidebar() (+8 more)
+### Community 8 - "Backend Package Config"
+Cohesion: 0.08
+Nodes (23): dependencies, bcryptjs, cors, dotenv, express, jsonwebtoken, mongoose, devDependencies (+15 more)
 
-### Community 4 - "Goal Controller & Suggestions"
-Cohesion: 0.12
-Nodes (20): { buildSuggestions }, { computeProjections }, create(), Goal, list(), mongoose, projections(), remove() (+12 more)
+### Community 9 - "App Shell & Auth Pages"
+Cohesion: 0.17
+Nodes (14): AppLayout(), LoginPage(), Home(), RegisterPage(), AuthForm(), CurrencySwitcher(), LanguageSwitcher(), Sidebar() (+6 more)
 
-### Community 5 - "Frontend npm Dependencies"
-Cohesion: 0.09
-Nodes (21): framer-motion, dependencies, framer-motion, lucide-react, next, react, react-dom, recharts (+13 more)
-
-### Community 6 - "Stats Service, Docker & README"
+### Community 10 - "Auth Controller & User Model"
 Cohesion: 0.14
-Nodes (18): incomeEntrySchema, mongoose, categoryBreakdown(), dailySummary(), dayRange(), ExpenseEntry, IncomeEntry, monthlyExpenseTotal() (+10 more)
+Nodes (13): bcrypt, jwt, login(), register(), signToken(), User, mongoose, userSchema (+5 more)
 
-### Community 7 - "Transactions UI (Income/Expense Forms)"
-Cohesion: 0.16
-Nodes (16): cardVariants, containerVariants, formatDate(), TransactionsPage(), CATEGORIES, ExpenseForm(), Props, IncomeForm() (+8 more)
+### Community 11 - "shadcn/ui Components Config"
+Cohesion: 0.11
+Nodes (17): aliases, components, hooks, lib, ui, utils, iconLibrary, rsc (+9 more)
 
-### Community 8 - "Auth Backend & Root Layout"
-Cohesion: 0.13
-Nodes (14): bcrypt, jwt, login(), register(), signToken(), User, mongoose, userSchema (+6 more)
+### Community 12 - "Theme, Locale & Currency Providers"
+Cohesion: 0.18
+Nodes (11): metadata, LocaleHtmlSync(), ThemeProvider(), CurrencyContext, CurrencyContextValue, CurrencyProvider(), CurrencyCode, CurrencyMeta (+3 more)
 
-### Community 9 - "Income Controller & Middleware"
-Cohesion: 0.14
+### Community 13 - "Income Controller & Auth Middleware"
+Cohesion: 0.17
 Nodes (12): create(), deactivate(), IncomeEntry, list(), remove(), replace(), jwt, asyncHandler (+4 more)
 
-### Community 10 - "Expense Controller & Model"
-Cohesion: 0.15
-Nodes (14): create(), { EXPENSE_CATEGORIES }, ExpenseEntry, list(), remove(), update(), EXPENSE_CATEGORIES, expenseEntrySchema (+6 more)
-
-### Community 11 - "Frontend Dev Tooling"
-Cohesion: 0.13
-Nodes (15): autoprefixer, devDependencies, autoprefixer, postcss, tailwindcss, @types/node, @types/react, @types/react-dom (+7 more)
-
-### Community 12 - "Backend App Entry & DB Config"
-Cohesion: 0.13
-Nodes (11): app, authRoutes, cors, expenseRoutes, express, goalRoutes, incomeRoutes, statsRoutes (+3 more)
-
-### Community 13 - "Stats Controller & Routes"
+### Community 14 - "Stats Controller"
 Cohesion: 0.23
 Nodes (13): categories(), daily(), mongoose, monthly(), parseYearMonth(), statsService, toUserId(), trend() (+5 more)
 
-### Community 14 - "Goal Projection Algorithms"
-Cohesion: 0.27
-Nodes (14): average(), averageRateProjection(), bestWorstCaseRange(), categoryCutSuggestions(), computeProjections(), DISCRETIONARY_CATEGORIES, monthsToDate(), stddev() (+6 more)
+### Community 15 - "Stats Service & Income Model"
+Cohesion: 0.22
+Nodes (12): incomeEntrySchema, mongoose, categoryBreakdown(), dailySummary(), dayRange(), ExpenseEntry, IncomeEntry, monthlyExpenseTotal() (+4 more)
+
+### Community 16 - "Dropdown Menu UI Primitive"
+Cohesion: 0.20
+Nodes (9): DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut(), DropdownMenuSubContent (+1 more)
+
+### Community 17 - "README API & Model Docs"
+Cohesion: 0.20
+Nodes (10): Income API routes, Expense category three-place sync requirement, ExpenseEntry model, format.ts, Incremental git history convention, i18n dictionaries (en.json/fa.json/fr.json), IncomeEntry model, Non-destructive raise/edit flow for recurring income (+2 more)
 
 ## Knowledge Gaps
-- **140 isolated node(s):** `name`, `version`, `private`, `type`, `main` (+135 more)
+- **217 isolated node(s):** `name`, `version`, `private`, `type`, `main` (+212 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AuthProvider()` connect `Auth Backend & Root Layout` to `Auth Pages & API Client`?**
-  _High betweenness centrality (0.045) - this node is a cross-community bridge._
-- **Why does `Pocket README` connect `Stats Service, Docker & README` to `Goal Controller & Suggestions`, `Goal Projection Algorithms`?**
-  _High betweenness centrality (0.023) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `Frontend Third-Party Dependencies` to `Goal Algorithms & README Docs`, `Frontend Dev Dependencies`?**
+  _High betweenness centrality (0.345) - this node is a cross-community bridge._
+- **Why does `AuthProvider()` connect `Auth Controller & User Model` to `App Shell & Auth Pages`, `Theme, Locale & Currency Providers`?**
+  _High betweenness centrality (0.313) - this node is a cross-community bridge._
+- **Why does `react` connect `Frontend Third-Party Dependencies` to `Frontend Form Components`?**
+  _High betweenness centrality (0.307) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _140 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Dashboard & Goals Display UI` be split into smaller, more focused modules?**
-  _Cohesion score 0.0824524312896406 - nodes in this community are weakly interconnected._
-- **Should `Frontend TypeScript Config` be split into smaller, more focused modules?**
-  _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._
-- **Should `Backend npm Dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.08 - nodes in this community are weakly interconnected._
-- **Should `Goal Controller & Suggestions` be split into smaller, more focused modules?**
-  _Cohesion score 0.11594202898550725 - nodes in this community are weakly interconnected._
+  _217 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Dashboard/Goals/Transactions Pages` be split into smaller, more focused modules?**
+  _Cohesion score 0.063568010936432 - nodes in this community are weakly interconnected._
+- **Should `Frontend Form Components` be split into smaller, more focused modules?**
+  _Cohesion score 0.08182349503214495 - nodes in this community are weakly interconnected._
+- **Should `Frontend Third-Party Dependencies` be split into smaller, more focused modules?**
+  _Cohesion score 0.046511627906976744 - nodes in this community are weakly interconnected._
