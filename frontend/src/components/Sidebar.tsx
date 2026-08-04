@@ -6,6 +6,7 @@ import { LayoutDashboard, PiggyBank, Wallet, LogOut, ArrowLeftRight } from 'luci
 import { useAuth } from '@/lib/auth-context';
 import ThemeToggle from '@/components/ThemeToggle';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 export default function Sidebar() {
@@ -49,6 +50,7 @@ export default function Sidebar() {
       <div className="hidden md:block px-2 space-y-3">
         <div className="flex items-center justify-between">
           <LanguageSwitcher />
+          <CurrencySwitcher />
           <ThemeToggle />
         </div>
         <p className="text-xs text-muted-foreground truncate">{user?.name}</p>

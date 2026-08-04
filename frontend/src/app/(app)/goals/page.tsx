@@ -11,12 +11,14 @@ import ProjectionsPanel from '@/components/ProjectionsPanel';
 import SuggestionsPanel from '@/components/SuggestionsPanel';
 import { Card, CardContent } from '@/components/ui/card';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { useCurrency } from '@/lib/currency-context';
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
 const cardVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } };
 
 export default function GoalsPage() {
   const { t } = useI18n();
+  const { toUSD } = useCurrency();
   const [goals, setGoals] = useState<Goal[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [projections, setProjections] = useState<GoalProjections | null>(null);
@@ -52,7 +54,10 @@ export default function GoalsPage() {
   }, []);
 
   async function createGoal(data: { name: string; targetAmount: number; targetDate: string | null }) {
-    const goal = await apiFetch<Goal>('/api/goals', { method: 'POST', body: JSON.stringify(data) });
+    const goal = await apiFetch<Goal>('/api/goals', {
+      method: 'POST',
+      body: JSON.stringify({ ...data, targetAmount: toUSD(data.targetAmount) }),
+    });
     await loadGoals();
     setSelectedId(goal._id);
     await loadProjections(goal._id);

@@ -1,7 +1,3 @@
-export function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
-}
-
 export function formatCategory(category: string, t?: (key: string) => string): string {
   if (t) return t(`category.${category}`);
   return category.charAt(0).toUpperCase() + category.slice(1);

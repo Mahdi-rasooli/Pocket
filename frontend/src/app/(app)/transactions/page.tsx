@@ -5,13 +5,14 @@ import { motion } from 'framer-motion';
 import { Trash2, TrendingUp, TrendingDown } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 import type { IncomeEntry, ExpenseEntry, IncomeType, ExpenseCategory } from '@/lib/types';
-import { formatCurrency, formatCategory } from '@/lib/format';
+import { formatCategory } from '@/lib/format';
 import IncomeForm from '@/components/IncomeForm';
 import ExpenseForm from '@/components/ExpenseForm';
 import RaiseForm from '@/components/RaiseForm';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { useCurrency } from '@/lib/currency-context';
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
 const cardVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } };
@@ -22,6 +23,7 @@ function formatDate(d: string) {
 
 export default function TransactionsPage() {
   const { t } = useI18n();
+  const { format, toUSD, toDisplay } = useCurrency();
   const [income, setIncome] = useState<IncomeEntry[]>([]);
   const [expenses, setExpenses] = useState<ExpenseEntry[]>([]);
   const [raiseTargetId, setRaiseTargetId] = useState<string | null>(null);
@@ -39,12 +41,12 @@ export default function TransactionsPage() {
   }, []);
 
   async function addIncome(data: { amount: number; source: string; type: IncomeType; startDate: string; note: string }) {
-    await apiFetch('/api/income', { method: 'POST', body: JSON.stringify(data) });
+    await apiFetch('/api/income', { method: 'POST', body: JSON.stringify({ ...data, amount: toUSD(data.amount) }) });
     await loadIncome();
   }
 
   async function addExpense(data: { amount: number; category: ExpenseCategory; date: string; note: string }) {
-    await apiFetch('/api/expenses', { method: 'POST', body: JSON.stringify(data) });
+    await apiFetch('/api/expenses', { method: 'POST', body: JSON.stringify({ ...data, amount: toUSD(data.amount) }) });
     await loadExpenses();
   }
 
@@ -59,7 +61,7 @@ export default function TransactionsPage() {
   }
 
   async function submitRaise(id: string, data: { amount: number; effectiveDate: string; note: string }) {
-    await apiFetch(`/api/income/${id}/replace`, { method: 'PUT', body: JSON.stringify(data) });
+    await apiFetch(`/api/income/${id}/replace`, { method: 'PUT', body: JSON.stringify({ ...data, amount: toUSD(data.amount) }) });
     setRaiseTargetId(null);
     await loadIncome();
   }
@@ -90,7 +92,7 @@ export default function TransactionsPage() {
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm">
-                        <span className="font-medium">{formatCurrency(entry.amount)}</span>
+                        <span className="font-medium">{format(entry.amount)}</span>
                         <span className="text-muted-foreground"> · {entry.source} · {entry.type === 'recurring' ? t('form.recurring') : t('form.oneTime')}</span>
                         {!entry.isActive && <span className="text-muted-foreground"> · {t('transactions.inactive')}</span>}
                       </p>
@@ -122,7 +124,7 @@ export default function TransactionsPage() {
                   </div>
                   {raiseTargetId === entry._id && (
                     <RaiseForm
-                      currentAmount={entry.amount}
+                      currentAmount={toDisplay(entry.amount)}
                       onCancel={() => setRaiseTargetId(null)}
                       onSubmit={(data) => submitRaise(entry._id, data)}
                     />
@@ -148,7 +150,7 @@ export default function TransactionsPage() {
                 <div key={entry._id} className="flex items-center justify-between gap-3 border-b border-surface-border last:border-0 py-2">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm">
-                      <span className="font-medium">{formatCurrency(entry.amount)}</span>
+                      <span className="font-medium">{format(entry.amount)}</span>
                       <span className="text-muted-foreground"> · {formatCategory(entry.category, t)}</span>
                     </p>
                     <p className="text-xs text-muted-foreground">

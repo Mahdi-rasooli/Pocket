@@ -3,9 +3,10 @@
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import type { CategoryBreakdownItem } from '@/lib/types';
-import { CATEGORY_COLORS, formatCategory, formatCurrency } from '@/lib/format';
+import { CATEGORY_COLORS, formatCategory } from '@/lib/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { useCurrency } from '@/lib/currency-context';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 16 },
@@ -14,6 +15,7 @@ const cardVariants = {
 
 export default function CategoryDonut({ data }: { data: CategoryBreakdownItem[] }) {
   const { t } = useI18n();
+  const { format } = useCurrency();
   const hasData = data.length > 0;
 
   return (
@@ -37,7 +39,7 @@ export default function CategoryDonut({ data }: { data: CategoryBreakdownItem[] 
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value: number, name: string) => [formatCurrency(value), formatCategory(name, t)]}
+                  formatter={(value: number, name: string) => [format(value), formatCategory(name, t)]}
                   contentStyle={{
                     background: 'hsl(var(--popover))',
                     border: '1px solid hsl(var(--border))',

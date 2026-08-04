@@ -4,6 +4,7 @@ import { AuthProvider } from '@/lib/auth-context';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { I18nProvider } from '@/lib/i18n/i18n-context';
 import LocaleHtmlSync from '@/components/LocaleHtmlSync';
+import { CurrencyProvider } from '@/lib/currency-context';
 
 export const metadata: Metadata = {
   title: 'Pocket — Personal Finance Tracker',
@@ -17,7 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <I18nProvider>
             <LocaleHtmlSync />
-            <AuthProvider>{children}</AuthProvider>
+            <CurrencyProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </CurrencyProvider>
           </I18nProvider>
         </ThemeProvider>
       </body>

@@ -3,9 +3,10 @@
 import { motion } from 'framer-motion';
 import { TrendingUp, LineChart as LineChartIcon, GitBranch, Scissors } from 'lucide-react';
 import type { GoalProjections } from '@/lib/types';
-import { formatCurrency, formatCategory } from '@/lib/format';
+import { formatCategory } from '@/lib/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { useCurrency } from '@/lib/currency-context';
 
 const cardVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } };
 
@@ -13,11 +14,12 @@ function ProjectionRow({ label, monthsRemaining, etaDate, monthlySavingsRate, no
   label: string; monthsRemaining: number | null; etaDate: string | null; monthlySavingsRate: number;
   notAvailable: string; monthUnit: string;
 }) {
+  const { format } = useCurrency();
   return (
     <div className="flex items-center justify-between py-2 border-b border-surface-border last:border-0">
       <div>
         <p className="text-sm">{label}</p>
-        <p className="text-xs text-muted-foreground">{formatCurrency(monthlySavingsRate)}/mo</p>
+        <p className="text-xs text-muted-foreground">{format(monthlySavingsRate)}/mo</p>
       </div>
       <p className="text-sm font-medium text-right">
         {monthsRemaining != null ? `${monthsRemaining} ${monthUnit}` : notAvailable}
@@ -29,6 +31,7 @@ function ProjectionRow({ label, monthsRemaining, etaDate, monthlySavingsRate, no
 
 export default function ProjectionsPanel({ projections }: { projections: GoalProjections }) {
   const { t } = useI18n();
+  const { format } = useCurrency();
   const { averageRate, weightedTrend, bestWorstCase, categoryCuts } = projections;
   const notAvailable = t('projections.notAvailable');
   const monthUnit = t('projections.month');
@@ -91,7 +94,7 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
             notAvailable={notAvailable}
             monthUnit={monthUnit}
           />
-          <p className="text-xs text-muted-foreground mt-2">± {formatCurrency(bestWorstCase.monthlySavingsStdDev)}/mo {t('projections.variance')}</p>
+          <p className="text-xs text-muted-foreground mt-2">± {format(bestWorstCase.monthlySavingsStdDev)}/mo {t('projections.variance')}</p>
         </CardContent>
       </Card>
 
@@ -105,7 +108,7 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
             <div key={c.category} className="flex items-center justify-between py-2 border-b border-surface-border last:border-0">
               <div>
                 <p className="text-sm">{formatCategory(c.category, t)}</p>
-                <p className="text-xs text-muted-foreground">{t('projections.cut')} {c.cutPercent}% · {t('projections.avg')} {formatCurrency(c.avgMonthlySpend)}/mo</p>
+                <p className="text-xs text-muted-foreground">{t('projections.cut')} {c.cutPercent}% · {t('projections.avg')} {format(c.avgMonthlySpend)}/mo</p>
               </div>
               <p className="text-sm font-medium text-right">
                 {c.newMonthsRemaining} {monthUnit}
