@@ -5,6 +5,7 @@ import { TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import DatePicker from '@/components/DatePicker';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface Props {
@@ -43,7 +44,7 @@ export default function RaiseForm({ currentAmount, onSubmit, onCancel }: Props) 
       </div>
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('raise.effectiveDate')}</Label>
-        <Input type="date" required value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} />
+        <DatePicker value={effectiveDate} onChange={setEffectiveDate} required />
       </div>
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.note')}</Label>

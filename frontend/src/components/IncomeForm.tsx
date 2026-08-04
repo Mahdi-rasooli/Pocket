@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import DatePicker from '@/components/DatePicker';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface Props {
@@ -59,7 +60,7 @@ export default function IncomeForm({ onSubmit }: Props) {
       </div>
       <div className="col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.startDate')}</Label>
-        <Input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        <DatePicker value={startDate} onChange={setStartDate} required />
       </div>
       <div className="col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.note')}</Label>

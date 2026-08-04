@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import DatePicker from '@/components/DatePicker';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface Props {
@@ -46,7 +47,7 @@ export default function GoalForm({ onSubmit }: Props) {
       </div>
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('goals.targetDateOptional')}</Label>
-        <Input type="date" value={targetDate} onChange={(e) => setTargetDate(e.target.value)} />
+        <DatePicker value={targetDate} onChange={setTargetDate} />
       </div>
       <Button type="submit" disabled={submitting}>
         <Plus size={16} /> {t('goals.createGoal')}
