@@ -1,10 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 import type { MonthlySummary } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from '@/components/ui/chart';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { useCurrency } from '@/lib/currency-context';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -15,10 +17,17 @@ const cardVariants = {
 
 export default function TrendChart({ data }: { data: MonthlySummary[] }) {
   const { t } = useI18n();
+  const { format } = useCurrency();
+
+  const chartConfig: ChartConfig = {
+    income: { label: t('transactions.income'), color: 'hsl(var(--chart-1))' },
+    expenses: { label: t('transactions.expenses'), color: 'hsl(var(--chart-2))' },
+  };
+
   const chartData = data.map((m) => ({
     name: MONTHS[m.month - 1],
-    Income: m.totalIncome,
-    Expenses: m.totalExpenses,
+    income: m.totalIncome,
+    expenses: m.totalExpenses,
   }));
 
   return (
@@ -26,24 +35,17 @@ export default function TrendChart({ data }: { data: MonthlySummary[] }) {
       <Card>
         <CardContent className="pt-6">
           <p className="text-sm text-muted-foreground mb-4">{t('dashboard.trendTitle')}</p>
-          <ResponsiveContainer width="100%" height={260}>
+          <ChartContainer config={chartConfig} className="aspect-auto h-[260px] w-full">
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
               <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} width={40} />
-              <Tooltip
-                contentStyle={{
-                  background: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: 8,
-                  fontSize: 13,
-                }}
-                labelStyle={{ color: 'hsl(var(--popover-foreground))' }}
-              />
-              <Line type="monotone" dataKey="Income" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="Expenses" stroke="#f87171" strokeWidth={2} dot={false} />
+              <ChartTooltip content={<ChartTooltipContent formatter={(value) => format(Number(value))} />} />
+              <ChartLegend content={<ChartLegendContent />} />
+              <Line type="monotone" dataKey="income" stroke="var(--color-income)" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="expenses" stroke="var(--color-expenses)" strokeWidth={2} dot={false} />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
     </motion.div>

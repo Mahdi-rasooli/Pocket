@@ -1,10 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart, Pie, Cell } from 'recharts';
 import type { CategoryBreakdownItem } from '@/lib/types';
 import { CATEGORY_COLORS, formatCategory } from '@/lib/format';
 import { Card, CardContent } from '@/components/ui/card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from '@/components/ui/chart';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { useCurrency } from '@/lib/currency-context';
 
@@ -18,14 +19,23 @@ export default function CategoryDonut({ data }: { data: CategoryBreakdownItem[] 
   const { format } = useCurrency();
   const hasData = data.length > 0;
 
+  const chartConfig: ChartConfig = data.reduce((acc, entry) => {
+    acc[entry.category] = {
+      label: formatCategory(entry.category, t),
+      color: CATEGORY_COLORS[entry.category] || '#64748b',
+    };
+    return acc;
+  }, {} as ChartConfig);
+
   return (
     <motion.div variants={cardVariants}>
       <Card>
         <CardContent className="pt-6">
           <p className="text-sm text-muted-foreground mb-4">{t('dashboard.categoryTitle')}</p>
           {hasData ? (
-            <ResponsiveContainer width="100%" height={260}>
+            <ChartContainer config={chartConfig} className="mx-auto aspect-auto h-[260px]">
               <PieChart>
+                <ChartTooltip content={<ChartTooltipContent formatter={(value) => format(Number(value))} nameKey="category" />} />
                 <Pie
                   data={data}
                   dataKey="total"
@@ -38,20 +48,9 @@ export default function CategoryDonut({ data }: { data: CategoryBreakdownItem[] 
                     <Cell key={entry.category} fill={CATEGORY_COLORS[entry.category] || '#64748b'} />
                   ))}
                 </Pie>
-                <Tooltip
-                  formatter={(value: number, name: string) => [format(value), formatCategory(name, t)]}
-                  contentStyle={{
-                    background: 'hsl(var(--popover))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: 8,
-                    fontSize: 13,
-                  }}
-                />
-                <Legend
-                  formatter={(value: string) => <span className="text-muted-foreground text-xs">{formatCategory(value, t)}</span>}
-                />
+                <ChartLegend content={<ChartLegendContent nameKey="category" />} />
               </PieChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           ) : (
             <div className="h-[260px] flex items-center justify-center text-sm text-muted-foreground">
               {t('dashboard.noExpenses')}
