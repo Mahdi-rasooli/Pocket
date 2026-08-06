@@ -4,7 +4,8 @@ export interface User {
   name: string;
 }
 
-export type IncomeType = 'recurring' | 'one-time';
+export type RecurrenceType = 'recurring' | 'one-time';
+export type IncomeType = RecurrenceType;
 
 export interface IncomeEntry {
   _id: string;
@@ -26,6 +27,9 @@ export interface ExpenseEntry {
   amount: number;
   category: ExpenseCategory;
   date: string;
+  type: RecurrenceType;
+  endDate: string | null;
+  isActive: boolean;
   note: string;
 }
 

@@ -37,6 +37,7 @@
   "transactions.noIncome": "No income logged yet.",
   "transactions.noExpenses": "No expenses logged yet.",
   "transactions.logARaise": "Log a raise",
+  "transactions.stopRecurring": "Stop",
   "transactions.inactive": "inactive",
 
   "form.amount": "Amount",

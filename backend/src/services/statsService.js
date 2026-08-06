@@ -39,13 +39,27 @@ async function monthlyIncomeTotal(userId, year, month) {
   return oneTimeTotal + recurringTotal;
 }
 
+// Expense entries predating the recurring-expense feature have no `type` field —
+// treat those as one-time so historical totals don't silently drop.
+const ONE_TIME_OR_LEGACY = { $or: [{ type: 'one-time' }, { type: { $exists: false } }] };
+
 async function monthlyExpenseTotal(userId, year, month) {
   const { start, end } = monthRange(year, month);
-  const result = await ExpenseEntry.aggregate([
-    { $match: { userId, date: { $gte: start, $lt: end } } },
+
+  const oneTime = await ExpenseEntry.aggregate([
+    { $match: { userId, ...ONE_TIME_OR_LEGACY, date: { $gte: start, $lt: end } } },
     { $group: { _id: null, total: { $sum: '$amount' } } },
   ]);
-  return result[0]?.total || 0;
+
+  const recurring = await ExpenseEntry.find({
+    userId,
+    type: 'recurring',
+    date: { $lt: end },
+    $or: [{ endDate: null }, { endDate: { $gte: start } }],
+  });
+
+  const recurringTotal = recurring.reduce((sum, e) => sum + e.amount, 0);
+  return (oneTime[0]?.total || 0) + recurringTotal;
 }
 
 async function dailySummary(userId, date) {
@@ -72,12 +86,27 @@ async function monthlySummary(userId, year, month) {
 
 async function categoryBreakdown(userId, year, month) {
   const { start, end } = monthRange(year, month);
-  const result = await ExpenseEntry.aggregate([
-    { $match: { userId, date: { $gte: start, $lt: end } } },
+
+  const oneTime = await ExpenseEntry.aggregate([
+    { $match: { userId, ...ONE_TIME_OR_LEGACY, date: { $gte: start, $lt: end } } },
     { $group: { _id: '$category', total: { $sum: '$amount' } } },
-    { $sort: { total: -1 } },
   ]);
-  return result.map((r) => ({ category: r._id, total: r.total }));
+
+  const recurring = await ExpenseEntry.find({
+    userId,
+    type: 'recurring',
+    date: { $lt: end },
+    $or: [{ endDate: null }, { endDate: { $gte: start } }],
+  });
+
+  const totals = new Map(oneTime.map((r) => [r._id, r.total]));
+  for (const entry of recurring) {
+    totals.set(entry.category, (totals.get(entry.category) || 0) + entry.amount);
+  }
+
+  return [...totals.entries()]
+    .map(([category, total]) => ({ category, total }))
+    .sort((a, b) => b.total - a.total);
 }
 
 // Trailing `months` months of {year, month, totalIncome, totalExpenses, netSavings}, oldest first.

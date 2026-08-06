@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { Plus } from 'lucide-react';
-import type { ExpenseCategory } from '@/lib/types';
+import type { ExpenseCategory, RecurrenceType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,13 +17,14 @@ const CATEGORIES: ExpenseCategory[] = [
 ];
 
 interface Props {
-  onSubmit: (data: { amount: number; category: ExpenseCategory; date: string; note: string }) => Promise<void>;
+  onSubmit: (data: { amount: number; category: ExpenseCategory; date: string; type: RecurrenceType; note: string }) => Promise<void>;
 }
 
 export default function ExpenseForm({ onSubmit }: Props) {
   const { t } = useI18n();
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState<ExpenseCategory>('food');
+  const [type, setType] = useState<RecurrenceType>('one-time');
   const [date, setDate] = useState(todayISO());
   const [note, setNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -32,7 +33,7 @@ export default function ExpenseForm({ onSubmit }: Props) {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await onSubmit({ amount: Number(amount), category, date, note });
+      await onSubmit({ amount: Number(amount), category, date, type, note });
       setAmount('');
       setNote('');
     } finally {
@@ -41,7 +42,7 @@ export default function ExpenseForm({ onSubmit }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-2 sm:grid-cols-5 gap-3 items-end">
+    <form onSubmit={handleSubmit} className="grid grid-cols-2 sm:grid-cols-6 gap-3 items-end">
       <div className="col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.amount')}</Label>
         <Input type="number" min="0" step="0.01" required value={amount} onChange={(e) => setAmount(e.target.value)} />
@@ -59,7 +60,19 @@ export default function ExpenseForm({ onSubmit }: Props) {
         </Select>
       </div>
       <div className="col-span-1 space-y-1.5">
-        <Label className="text-xs text-muted-foreground">{t('form.date')}</Label>
+        <Label className="text-xs text-muted-foreground">{t('form.type')}</Label>
+        <Select value={type} onValueChange={(v) => setType(v as RecurrenceType)}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="recurring">{t('form.recurring')}</SelectItem>
+            <SelectItem value="one-time">{t('form.oneTime')}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground">{type === 'recurring' ? t('form.startDate') : t('form.date')}</Label>
         <DatePicker value={date} onChange={setDate} required />
       </div>
       <div className="col-span-1 space-y-1.5">

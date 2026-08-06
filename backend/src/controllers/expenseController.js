@@ -14,12 +14,15 @@ async function list(req, res) {
 }
 
 async function create(req, res) {
-  const { amount, category, date, note } = req.body;
+  const { amount, category, date, type, endDate, note } = req.body;
   if (amount == null || !category || !date) {
     return res.status(400).json({ error: 'amount, category, and date are required' });
   }
   if (!EXPENSE_CATEGORIES.includes(category)) {
     return res.status(400).json({ error: `category must be one of: ${EXPENSE_CATEGORIES.join(', ')}` });
+  }
+  if (type && !['recurring', 'one-time'].includes(type)) {
+    return res.status(400).json({ error: 'type must be "recurring" or "one-time"' });
   }
 
   const entry = await ExpenseEntry.create({
@@ -27,6 +30,8 @@ async function create(req, res) {
     amount,
     category,
     date,
+    type: type || 'one-time',
+    endDate: endDate || null,
     note: note || '',
   });
   res.status(201).json(entry);
@@ -56,6 +61,21 @@ async function update(req, res) {
   res.json(entry);
 }
 
+// Stops a recurring expense (e.g. a canceled subscription) as of endDate, without
+// deleting its history — mirrors IncomeEntry's deactivate.
+async function deactivate(req, res) {
+  const { id } = req.params;
+  const entry = await ExpenseEntry.findOneAndUpdate(
+    { _id: id, userId: req.userId },
+    { isActive: false, endDate: req.body.endDate || new Date() },
+    { new: true }
+  );
+  if (!entry) {
+    return res.status(404).json({ error: 'Expense entry not found' });
+  }
+  res.json(entry);
+}
+
 async function remove(req, res) {
   const { id } = req.params;
   const entry = await ExpenseEntry.findOneAndDelete({ _id: id, userId: req.userId });
@@ -65,4 +85,4 @@ async function remove(req, res) {
   res.status(204).send();
 }
 
-module.exports = { list, create, update, remove };
+module.exports = { list, create, update, deactivate, remove };

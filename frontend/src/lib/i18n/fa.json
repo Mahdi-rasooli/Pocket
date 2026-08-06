@@ -37,6 +37,7 @@
   "transactions.noIncome": "هنوز درآمدی ثبت نشده است.",
   "transactions.noExpenses": "هنوز هزینه‌ای ثبت نشده است.",
   "transactions.logARaise": "ثبت افزایش حقوق",
+  "transactions.stopRecurring": "توقف",
   "transactions.inactive": "غیرفعال",
 
   "form.amount": "مبلغ",

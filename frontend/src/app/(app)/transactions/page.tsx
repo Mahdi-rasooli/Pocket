@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Trash2, TrendingUp, TrendingDown } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
-import type { IncomeEntry, ExpenseEntry, IncomeType, ExpenseCategory } from '@/lib/types';
+import type { IncomeEntry, ExpenseEntry, RecurrenceType, ExpenseCategory } from '@/lib/types';
 import { formatCategory } from '@/lib/format';
 import IncomeForm from '@/components/IncomeForm';
 import ExpenseForm from '@/components/ExpenseForm';
@@ -40,13 +40,18 @@ export default function TransactionsPage() {
     Promise.all([loadIncome(), loadExpenses()]).finally(() => setLoading(false));
   }, []);
 
-  async function addIncome(data: { amount: number; source: string; type: IncomeType; startDate: string; note: string }) {
+  async function addIncome(data: { amount: number; source: string; type: RecurrenceType; startDate: string; note: string }) {
     await apiFetch('/api/income', { method: 'POST', body: JSON.stringify({ ...data, amount: toUSD(data.amount) }) });
     await loadIncome();
   }
 
-  async function addExpense(data: { amount: number; category: ExpenseCategory; date: string; note: string }) {
+  async function addExpense(data: { amount: number; category: ExpenseCategory; date: string; type: RecurrenceType; note: string }) {
     await apiFetch('/api/expenses', { method: 'POST', body: JSON.stringify({ ...data, amount: toUSD(data.amount) }) });
+    await loadExpenses();
+  }
+
+  async function stopExpense(id: string) {
+    await apiFetch(`/api/expenses/${id}/deactivate`, { method: 'PATCH', body: JSON.stringify({}) });
     await loadExpenses();
   }
 
@@ -152,19 +157,36 @@ export default function TransactionsPage() {
                     <p className="text-sm">
                       <span className="font-medium">{format(entry.amount)}</span>
                       <span className="text-muted-foreground"> · {formatCategory(entry.category, t)}</span>
+                      {entry.type === 'recurring' && (
+                        <span className="text-muted-foreground"> · {t('form.recurring')}</span>
+                      )}
+                      {!entry.isActive && <span className="text-muted-foreground"> · {t('transactions.inactive')}</span>}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {formatDate(entry.date)}{entry.note && ` · ${entry.note}`}
+                      {formatDate(entry.date)}{entry.endDate ? ` → ${formatDate(entry.endDate)}` : ''}
+                      {entry.note && ` · ${entry.note}`}
                     </p>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-auto w-auto p-0 text-muted-foreground hover:text-red-400 hover:bg-transparent shrink-0"
-                    onClick={() => deleteExpense(entry._id)}
-                  >
-                    <Trash2 size={15} />
-                  </Button>
+                  <div className="flex items-center gap-3 shrink-0">
+                    {entry.type === 'recurring' && entry.isActive && (
+                      <Button
+                        variant="link"
+                        size="sm"
+                        className="h-auto p-0 text-xs text-brand"
+                        onClick={() => stopExpense(entry._id)}
+                      >
+                        {t('transactions.stopRecurring')}
+                      </Button>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-auto w-auto p-0 text-muted-foreground hover:text-red-400 hover:bg-transparent"
+                      onClick={() => deleteExpense(entry._id)}
+                    >
+                      <Trash2 size={15} />
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>

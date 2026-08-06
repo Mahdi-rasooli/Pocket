@@ -37,6 +37,7 @@
   "transactions.noIncome": "Aucun revenu enregistré pour l'instant.",
   "transactions.noExpenses": "Aucune dépense enregistrée pour l'instant.",
   "transactions.logARaise": "Enregistrer une augmentation",
+  "transactions.stopRecurring": "Arrêter",
   "transactions.inactive": "inactif",
 
   "form.amount": "Montant",

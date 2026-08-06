@@ -98,7 +98,7 @@ This builds and runs both containers (frontend on `:3000`, backend on `:5000`). 
 
 **IncomeEntry** — `amount`, `source`, `type` (`recurring` | `one-time`), `startDate`, `endDate` (nullable), `isActive`, `note`. Raises are never destructive: editing a recurring entry's amount closes the old entry (`endDate` + `isActive: false`) and creates a new one starting from the effective date, so historical totals stay accurate.
 
-**ExpenseEntry** — `amount`, `category` (`housing | food | dining | transport | entertainment | shopping | health | utilities | other`), `date`, `note`.
+**ExpenseEntry** — `amount`, `category` (`housing | food | dining | transport | entertainment | shopping | health | utilities | other`), `date` (start date for recurring), `type` (`recurring` | `one-time`, default `one-time`), `endDate` (nullable), `isActive`, `note`. Recurring expenses (rent, subscriptions) count their full amount toward every month they're active, same as recurring income; deactivating stops them without deleting history.
 
 **Goal** — `name`, `targetAmount`, `targetDate` (optional).
 
@@ -120,8 +120,9 @@ All routes are prefixed with `/api` and (except auth) require `Authorization: Be
 
 **Expenses**
 - `GET /api/expenses?from=&to=` — list, optionally filtered by date range
-- `POST /api/expenses` — `{ amount, category, date, note? }`
+- `POST /api/expenses` — `{ amount, category, date, type?, endDate?, note? }`
 - `PUT /api/expenses/:id`
+- `PATCH /api/expenses/:id/deactivate` — `{ endDate? }`, stops a recurring expense
 - `DELETE /api/expenses/:id`
 
 **Stats**
