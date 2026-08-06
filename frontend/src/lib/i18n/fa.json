@@ -107,6 +107,12 @@
   "category.utilities": "قبوض",
   "category.other": "سایر",
 
+  "csv.export": "خروجی CSV",
+  "csv.import": "ورودی CSV",
+  "csv.importing": "در حال وارد کردن…",
+  "csv.imported": "{n} مورد وارد شد",
+  "csv.rowsSkipped": "{n} ردیف رد شد",
+
   "language.label": "زبان",
   "currency.label": "واحد پول"
 }

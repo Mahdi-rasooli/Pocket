@@ -9,6 +9,7 @@ import { formatCategory } from '@/lib/format';
 import IncomeForm from '@/components/IncomeForm';
 import ExpenseForm from '@/components/ExpenseForm';
 import RaiseForm from '@/components/RaiseForm';
+import CsvActions from '@/components/CsvActions';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n/i18n-context';
@@ -85,9 +86,12 @@ export default function TransactionsPage() {
       <motion.div variants={cardVariants}>
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
-              <p className="font-medium">{t('transactions.income')}</p>
+            <div className="flex items-center justify-between gap-2 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
+                <p className="font-medium">{t('transactions.income')}</p>
+              </div>
+              <CsvActions exportUrl="/api/income/export" importUrl="/api/income/import" filename="pocket-income.csv" onImported={loadIncome} />
             </div>
             <IncomeForm onSubmit={addIncome} />
             <div className="mt-5 space-y-2">
@@ -144,9 +148,12 @@ export default function TransactionsPage() {
       <motion.div variants={cardVariants}>
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="bg-red-500/15 text-red-400 p-1.5 rounded-lg"><TrendingDown size={16} /></div>
-              <p className="font-medium">{t('transactions.expenses')}</p>
+            <div className="flex items-center justify-between gap-2 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="bg-red-500/15 text-red-400 p-1.5 rounded-lg"><TrendingDown size={16} /></div>
+                <p className="font-medium">{t('transactions.expenses')}</p>
+              </div>
+              <CsvActions exportUrl="/api/expenses/export" importUrl="/api/expenses/import" filename="pocket-expenses.csv" onImported={loadExpenses} />
             </div>
             <ExpenseForm onSubmit={addExpense} />
             <div className="mt-5 space-y-2">

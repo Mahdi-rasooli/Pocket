@@ -32,4 +32,18 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
   return data as T;
 }
 
+// For non-JSON responses (CSV export) — apiFetch always parses JSON.
+export async function apiFetchText(path: string): Promise<string> {
+  const token = getToken();
+  const headers: Record<string, string> = {};
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const res = await fetch(`${API_URL}${path}`, { headers });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new ApiError(data.error || 'Request failed', res.status);
+  }
+  return res.text();
+}
+
 export { API_URL };

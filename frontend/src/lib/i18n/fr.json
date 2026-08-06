@@ -107,6 +107,12 @@
   "category.utilities": "Charges",
   "category.other": "Autre",
 
+  "csv.export": "Exporter en CSV",
+  "csv.import": "Importer un CSV",
+  "csv.importing": "Importation…",
+  "csv.imported": "{n} importée(s)",
+  "csv.rowsSkipped": "{n} ligne(s) ignorée(s)",
+
   "language.label": "Langue",
   "currency.label": "Devise"
 }

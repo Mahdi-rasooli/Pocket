@@ -32,7 +32,7 @@ frontend/
         goals/                 Goal creation + all 4 projection algorithms
     components/
       ui/                     shadcn/ui primitives (button, input, select, card, calendar, chart, ...)
-      StatCard.tsx, TrendChart.tsx, CategoryDonut.tsx, ProjectionsPanel.tsx, SuggestionsPanel.tsx, BudgetsPanel.tsx
+      StatCard.tsx, TrendChart.tsx, CategoryDonut.tsx, ProjectionsPanel.tsx, SuggestionsPanel.tsx, BudgetsPanel.tsx, CsvActions.tsx
       IncomeForm.tsx, ExpenseForm.tsx, RaiseForm.tsx, GoalForm.tsx, AuthForm.tsx
       DatePicker.tsx           Gregorian or Jalali calendar picker, switches on active locale
       AmountPreview.tsx        Live "≈ 40K dollars" / "≈ 40 million toman" readout under amount inputs
@@ -126,6 +126,10 @@ All routes are prefixed with `/api` and (except auth) require `Authorization: Be
 - `PUT /api/expenses/:id`
 - `PATCH /api/expenses/:id/deactivate` — `{ endDate? }`, stops a recurring expense
 - `DELETE /api/expenses/:id`
+- `GET /api/expenses/export` — CSV download
+- `POST /api/expenses/import` — `{ csv }` → `{ imported, errors }`, bad rows are skipped and reported, not fatal
+
+Income supports the same `GET /api/income/export` / `POST /api/income/import` pair, with columns `amount,source,type,startDate,endDate,note`. Expense CSV columns: `amount,category,date,type,endDate,note`.
 
 **Stats**
 - `GET /api/stats/daily?date=` — that day's income/expense totals + entries

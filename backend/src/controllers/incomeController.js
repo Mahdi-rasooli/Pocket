@@ -1,4 +1,7 @@
 const IncomeEntry = require('../models/IncomeEntry');
+const { toCSV, parseCSV } = require('../utils/csv');
+
+const CSV_COLUMNS = ['amount', 'source', 'type', 'startDate', 'endDate', 'note'];
 
 async function list(req, res) {
   const entries = await IncomeEntry.find({ userId: req.userId }).sort({ startDate: -1 });
@@ -80,4 +83,53 @@ async function remove(req, res) {
   res.status(204).send();
 }
 
-module.exports = { list, create, replace, deactivate, remove };
+async function exportCSV(req, res) {
+  const entries = await IncomeEntry.find({ userId: req.userId }).sort({ startDate: -1 }).lean();
+  const rows = entries.map((e) => ({
+    ...e,
+    startDate: e.startDate.toISOString().slice(0, 10),
+    endDate: e.endDate ? e.endDate.toISOString().slice(0, 10) : '',
+  }));
+  res.header('Content-Type', 'text/csv');
+  res.header('Content-Disposition', 'attachment; filename="pocket-income.csv"');
+  res.send(toCSV(rows, CSV_COLUMNS));
+}
+
+// Bulk-creates income entries from CSV text (same columns as exportCSV). Rows
+// missing a required field are skipped and reported back, not aborting the batch.
+async function importCSV(req, res) {
+  const { csv } = req.body;
+  if (!csv) {
+    return res.status(400).json({ error: 'csv is required' });
+  }
+
+  const rows = parseCSV(csv);
+  const toInsert = [];
+  const errors = [];
+
+  rows.forEach((row, i) => {
+    const { amount, source, type, startDate, endDate, note } = row;
+    if (!amount || !source || !type || !startDate) {
+      errors.push({ row: i + 2, error: 'missing amount, source, type, or startDate' });
+      return;
+    }
+    if (!['recurring', 'one-time'].includes(type)) {
+      errors.push({ row: i + 2, error: 'type must be "recurring" or "one-time"' });
+      return;
+    }
+    toInsert.push({
+      userId: req.userId,
+      amount: Number(amount),
+      source,
+      type,
+      startDate,
+      endDate: endDate || null,
+      note: note || '',
+    });
+  });
+
+  const created = toInsert.length ? await IncomeEntry.insertMany(toInsert) : [];
+  res.status(201).json({ imported: created.length, errors });
+}
+
+module.exports = { list, create, replace, deactivate, remove, exportCSV, importCSV };

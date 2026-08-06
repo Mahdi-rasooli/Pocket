@@ -107,6 +107,12 @@
   "category.utilities": "Utilities",
   "category.other": "Other",
 
+  "csv.export": "Export CSV",
+  "csv.import": "Import CSV",
+  "csv.importing": "Importing…",
+  "csv.imported": "Imported {n}",
+  "csv.rowsSkipped": "{n} row(s) skipped",
+
   "language.label": "Language",
   "currency.label": "Currency"
 }
