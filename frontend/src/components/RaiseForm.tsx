@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import DatePicker from '@/components/DatePicker';
 import AmountPreview from '@/components/AmountPreview';
+import FieldHelper from '@/components/FieldHelper';
 import { todayISO } from '@/lib/date';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
@@ -35,7 +36,13 @@ export default function RaiseForm({ currentAmount, onSubmit, onCancel }: Props) 
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-2 bg-surface border border-surface-border rounded-lg p-3 mt-2">
-      <TrendingUp size={16} className="text-brand mb-2" />
+      <div className="space-y-1.5">
+        <Label className="text-xs text-muted-foreground invisible" aria-hidden>&nbsp;</Label>
+        <div className="h-9 flex items-center">
+          <TrendingUp size={16} className="text-brand" />
+        </div>
+        <FieldHelper />
+      </div>
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('raise.newAmount')}</Label>
         <Input
@@ -48,17 +55,25 @@ export default function RaiseForm({ currentAmount, onSubmit, onCancel }: Props) 
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('raise.effectiveDate')}</Label>
         <DatePicker value={effectiveDate} onChange={setEffectiveDate} required />
+        <FieldHelper />
       </div>
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.note')}</Label>
         <Input value={note} onChange={(e) => setNote(e.target.value)} />
+        <FieldHelper />
       </div>
-      <Button type="submit" disabled={submitting} size="sm">
-        {submitting ? t('raise.saving') : t('raise.confirm')}
-      </Button>
-      <Button type="button" variant="ghost" size="sm" onClick={onCancel} className="text-muted-foreground">
-        {t('raise.cancel')}
-      </Button>
+      <div className="space-y-1.5">
+        <Label className="text-xs text-muted-foreground invisible" aria-hidden>&nbsp;</Label>
+        <div className="flex items-center gap-2">
+          <Button type="submit" disabled={submitting} size="sm">
+            {submitting ? t('raise.saving') : t('raise.confirm')}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={onCancel} className="text-muted-foreground">
+            {t('raise.cancel')}
+          </Button>
+        </div>
+        <FieldHelper />
+      </div>
     </form>
   );
 }

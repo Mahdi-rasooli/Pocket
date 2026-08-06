@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import DatePicker from '@/components/DatePicker';
 import AmountPreview from '@/components/AmountPreview';
+import FieldHelper from '@/components/FieldHelper';
 import { todayISO } from '@/lib/date';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
@@ -48,6 +49,7 @@ export default function IncomeForm({ onSubmit }: Props) {
       <div className="col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.source')}</Label>
         <Input required value={source} onChange={(e) => setSource(e.target.value)} />
+        <FieldHelper />
       </div>
       <div className="col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.type')}</Label>
@@ -60,18 +62,25 @@ export default function IncomeForm({ onSubmit }: Props) {
             <SelectItem value="one-time">{t('form.oneTime')}</SelectItem>
           </SelectContent>
         </Select>
+        <FieldHelper />
       </div>
       <div className="col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.startDate')}</Label>
         <DatePicker value={startDate} onChange={setStartDate} required />
+        <FieldHelper />
       </div>
       <div className="col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.note')}</Label>
         <Input value={note} onChange={(e) => setNote(e.target.value)} />
+        <FieldHelper />
       </div>
-      <Button type="submit" disabled={submitting}>
-        <Plus size={16} /> {t('form.add')}
-      </Button>
+      <div className="col-span-1 space-y-1.5">
+        <Label className="text-xs text-muted-foreground invisible" aria-hidden>&nbsp;</Label>
+        <Button type="submit" disabled={submitting}>
+          <Plus size={16} /> {t('form.add')}
+        </Button>
+        <FieldHelper />
+      </div>
     </form>
   );
 }

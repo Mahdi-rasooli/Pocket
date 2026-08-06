@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import DatePicker from '@/components/DatePicker';
 import AmountPreview from '@/components/AmountPreview';
+import FieldHelper from '@/components/FieldHelper';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface Props {
@@ -38,6 +39,7 @@ export default function GoalForm({ onSubmit }: Props) {
       <div className="col-span-2 sm:col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('goals.goalName')}</Label>
         <Input required value={name} onChange={(e) => setName(e.target.value)} placeholder={t('goals.goalNamePlaceholder')} />
+        <FieldHelper />
       </div>
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('goals.targetAmount')}</Label>
@@ -50,10 +52,15 @@ export default function GoalForm({ onSubmit }: Props) {
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('goals.targetDateOptional')}</Label>
         <DatePicker value={targetDate} onChange={setTargetDate} />
+        <FieldHelper />
       </div>
-      <Button type="submit" disabled={submitting}>
-        <Plus size={16} /> {t('goals.createGoal')}
-      </Button>
+      <div className="space-y-1.5">
+        <Label className="text-xs text-muted-foreground invisible" aria-hidden>&nbsp;</Label>
+        <Button type="submit" disabled={submitting}>
+          <Plus size={16} /> {t('goals.createGoal')}
+        </Button>
+        <FieldHelper />
+      </div>
     </form>
   );
 }
