@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import DatePicker from '@/components/DatePicker';
+import AmountPreview from '@/components/AmountPreview';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface Props {
@@ -41,6 +42,7 @@ export default function IncomeForm({ onSubmit }: Props) {
       <div className="col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.amount')}</Label>
         <Input type="number" min="0" step="0.01" required value={amount} onChange={(e) => setAmount(e.target.value)} />
+        <AmountPreview value={amount} />
       </div>
       <div className="col-span-1 space-y-1.5">
         <Label className="text-xs text-muted-foreground">{t('form.source')}</Label>

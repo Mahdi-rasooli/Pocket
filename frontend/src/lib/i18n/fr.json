@@ -50,6 +50,12 @@
   "form.category": "Catégorie",
   "form.add": "Ajouter",
 
+  "amount.unit.USD": "dollars",
+  "amount.unit.EUR": "euros",
+  "amount.unit.IRR": "rials",
+  "amount.unit.JPY": "yens",
+  "amount.unit.toman": "tomans",
+
   "raise.newAmount": "Nouveau montant",
   "raise.effectiveDate": "Date d'effet",
   "raise.confirm": "Confirmer l'augmentation",

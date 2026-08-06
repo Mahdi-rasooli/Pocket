@@ -50,6 +50,12 @@
   "form.category": "دسته",
   "form.add": "افزودن",
 
+  "amount.unit.USD": "دلار",
+  "amount.unit.EUR": "یورو",
+  "amount.unit.IRR": "ریال",
+  "amount.unit.JPY": "ین",
+  "amount.unit.toman": "تومان",
+
   "raise.newAmount": "مبلغ جدید",
   "raise.effectiveDate": "تاریخ اجرا",
   "raise.confirm": "تأیید افزایش",
