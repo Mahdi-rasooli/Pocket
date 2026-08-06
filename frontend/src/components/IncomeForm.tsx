@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import DatePicker from '@/components/DatePicker';
 import AmountPreview from '@/components/AmountPreview';
+import { todayISO } from '@/lib/date';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface Props {
@@ -20,7 +21,7 @@ export default function IncomeForm({ onSubmit }: Props) {
   const [amount, setAmount] = useState('');
   const [source, setSource] = useState('');
   const [type, setType] = useState<IncomeType>('recurring');
-  const [startDate, setStartDate] = useState(new Date().toISOString().slice(0, 10));
+  const [startDate, setStartDate] = useState(todayISO());
   const [note, setNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
 

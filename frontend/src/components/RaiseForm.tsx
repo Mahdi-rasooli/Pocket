@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import DatePicker from '@/components/DatePicker';
 import AmountPreview from '@/components/AmountPreview';
+import { todayISO } from '@/lib/date';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface Props {
@@ -18,7 +19,7 @@ interface Props {
 export default function RaiseForm({ currentAmount, onSubmit, onCancel }: Props) {
   const { t } = useI18n();
   const [amount, setAmount] = useState(String(currentAmount));
-  const [effectiveDate, setEffectiveDate] = useState(new Date().toISOString().slice(0, 10));
+  const [effectiveDate, setEffectiveDate] = useState(todayISO());
   const [note, setNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
 

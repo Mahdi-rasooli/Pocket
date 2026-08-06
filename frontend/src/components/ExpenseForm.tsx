@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import DatePicker from '@/components/DatePicker';
 import AmountPreview from '@/components/AmountPreview';
+import { todayISO } from '@/lib/date';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 const CATEGORIES: ExpenseCategory[] = [
@@ -23,7 +24,7 @@ export default function ExpenseForm({ onSubmit }: Props) {
   const { t } = useI18n();
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState<ExpenseCategory>('food');
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(todayISO());
   const [note, setNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
