@@ -2,6 +2,8 @@
 
 A full-stack personal finance tracker. Log recurring and one-off income, log expenses, view daily/monthly stats, set savings goals (e.g. "buy a car"), and get algorithm-driven predictions for when you'll reach them.
 
+**New to the app?** See [HOW-TO-USE.md](HOW-TO-USE.md) ([فارسی](HOW-TO-USE.fa.md)) for a plain-language walkthrough of every feature. This README is for developers working on the codebase.
+
 ## Stack
 - **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS, [shadcn/ui](https://ui.shadcn.com) components, `lucide-react` icons, `framer-motion` animation, `recharts` charts (via shadcn's `chart.tsx` wrapper), `next-themes` (light/dark), `date-fns` / `date-fns-jalali` (Gregorian + Jalali date pickers).
 - **Backend**: Node.js + Express, MongoDB Atlas via Mongoose, JWT auth (`bcryptjs` for password hashing).
