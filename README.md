@@ -32,7 +32,7 @@ frontend/
         goals/                 Goal creation + all 4 projection algorithms
     components/
       ui/                     shadcn/ui primitives (button, input, select, card, calendar, chart, ...)
-      StatCard.tsx, TrendChart.tsx, CategoryDonut.tsx, ProjectionsPanel.tsx, SuggestionsPanel.tsx, BudgetsPanel.tsx, CsvActions.tsx
+      StatCard.tsx, TrendChart.tsx, CategoryDonut.tsx, ProjectionsPanel.tsx, SuggestionsPanel.tsx, BudgetsPanel.tsx, CsvActions.tsx, ShareGoalPanel.tsx
       IncomeForm.tsx, ExpenseForm.tsx, RaiseForm.tsx, GoalForm.tsx, AuthForm.tsx
       DatePicker.tsx           Gregorian or Jalali calendar picker, switches on active locale
       AmountPreview.tsx        Live "≈ 40K dollars" / "≈ 40 million toman" readout under amount inputs
@@ -100,7 +100,7 @@ This builds and runs both containers (frontend on `:3000`, backend on `:5000`). 
 
 **ExpenseEntry** — `amount`, `category` (`housing | food | dining | transport | entertainment | shopping | health | utilities | other`), `date` (start date for recurring), `type` (`recurring` | `one-time`, default `one-time`), `endDate` (nullable), `isActive`, `note`. Recurring expenses (rent, subscriptions) count their full amount toward every month they're active, same as recurring income; deactivating stops them without deleting history.
 
-**Goal** — `name`, `targetAmount`, `targetDate` (optional).
+**Goal** — `name`, `targetAmount`, `targetDate` (optional), `collaborators` (User refs). Collaborators see the goal and their *own* progress toward it — projections are always computed from the viewing user's own income/expense data, not a pooled balance. Only the owner can invite/remove collaborators or edit/delete the goal.
 
 **Budget** — `category`, `monthlyLimit`. One per category per user; compared against that category's spend for whichever month is in view.
 
@@ -148,6 +148,8 @@ Income supports the same `GET /api/income/export` / `POST /api/income/import` pa
 - `PUT /api/goals/:id`
 - `DELETE /api/goals/:id`
 - `GET /api/goals/:id/projections` — runs all four algorithms below and returns them together with plain-language suggestions
+- `POST /api/goals/:id/collaborators` — `{ email }`, owner-only, invitee must already have a Pocket account
+- `DELETE /api/goals/:id/collaborators/:userId` — owner-only
 
 ## The four projection algorithms
 Computed in `backend/src/services/projections.js` from the trailing 6 months of `{totalIncome, totalExpenses, netSavings}` (via `statsService.trend`):

@@ -52,11 +52,19 @@ export interface Budget {
   monthlyLimit: number;
 }
 
+export interface GoalCollaborator {
+  _id: string;
+  name: string;
+  email: string;
+}
+
 export interface Goal {
   _id: string;
   name: string;
   targetAmount: number;
   targetDate: string | null;
+  userId: GoalCollaborator;
+  collaborators: GoalCollaborator[];
 }
 
 export interface ProjectionPoint {

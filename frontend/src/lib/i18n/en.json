@@ -75,6 +75,9 @@
   "goals.calculating": "Calculating projections…",
   "goals.loading": "Loading goals…",
   "goals.of": "of",
+  "goals.sharedBy": "Shared by {name}",
+  "goals.invite": "Invite",
+  "goals.inviteEmailPlaceholder": "Invite by email",
 
   "projections.averageRate": "Average savings rate",
   "projections.weightedTrend": "Weighted recent-trend",

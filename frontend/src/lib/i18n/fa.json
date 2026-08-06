@@ -75,6 +75,9 @@
   "goals.calculating": "در حال محاسبه پیش‌بینی‌ها…",
   "goals.loading": "در حال بارگذاری اهداف…",
   "goals.of": "از",
+  "goals.sharedBy": "به اشتراک‌گذاشته توسط {name}",
+  "goals.invite": "دعوت",
+  "goals.inviteEmailPlaceholder": "دعوت با ایمیل",
 
   "projections.averageRate": "میانگین نرخ پس‌انداز",
   "projections.weightedTrend": "روند اخیر وزن‌دار",

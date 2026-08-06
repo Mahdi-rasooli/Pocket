@@ -75,6 +75,9 @@
   "goals.calculating": "Calcul des projections…",
   "goals.loading": "Chargement des objectifs…",
   "goals.of": "sur",
+  "goals.sharedBy": "Partagé par {name}",
+  "goals.invite": "Inviter",
+  "goals.inviteEmailPlaceholder": "Inviter par e-mail",
 
   "projections.averageRate": "Taux d'épargne moyen",
   "projections.weightedTrend": "Tendance récente pondérée",

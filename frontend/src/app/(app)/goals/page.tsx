@@ -9,6 +9,7 @@ import GoalForm from '@/components/GoalForm';
 import GoalProgressCard from '@/components/GoalProgressCard';
 import ProjectionsPanel from '@/components/ProjectionsPanel';
 import SuggestionsPanel from '@/components/SuggestionsPanel';
+import ShareGoalPanel from '@/components/ShareGoalPanel';
 import { Card, CardContent } from '@/components/ui/card';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { useCurrency } from '@/lib/currency-context';
@@ -68,6 +69,20 @@ export default function GoalsPage() {
     loadProjections(id);
   }
 
+  async function inviteCollaborator(email: string) {
+    if (!selectedId) return;
+    await apiFetch(`/api/goals/${selectedId}/collaborators`, { method: 'POST', body: JSON.stringify({ email }) });
+    await loadGoals();
+  }
+
+  async function removeCollaborator(collaboratorId: string) {
+    if (!selectedId) return;
+    await apiFetch(`/api/goals/${selectedId}/collaborators/${collaboratorId}`, { method: 'DELETE' });
+    await loadGoals();
+  }
+
+  const selectedGoal = goals.find((g) => g._id === selectedId);
+
   if (loading) {
     return <div className="text-sm text-muted-foreground">{t('goals.loading')}</div>;
   }
@@ -106,6 +121,10 @@ export default function GoalsPage() {
               />
             ))}
           </motion.div>
+
+          {selectedGoal && (
+            <ShareGoalPanel goal={selectedGoal} onInvite={inviteCollaborator} onRemove={removeCollaborator} />
+          )}
 
           {projectionsLoading && <p className="text-sm text-muted-foreground">{t('goals.calculating')}</p>}
           {!projectionsLoading && projections && (
