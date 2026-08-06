@@ -46,6 +46,12 @@ export interface CategoryBreakdownItem {
   total: number;
 }
 
+export interface Budget {
+  _id: string;
+  category: ExpenseCategory;
+  monthlyLimit: number;
+}
+
 export interface Goal {
   _id: string;
   name: string;

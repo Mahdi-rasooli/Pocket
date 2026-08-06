@@ -92,6 +92,11 @@
   "suggestions.title": "پیشنهادها",
   "suggestions.empty": "هنوز داده کافی برای ارائه پیشنهاد وجود ندارد.",
 
+  "budgets.title": "بودجه‌ها",
+  "budgets.noBudgets": "هنوز بودجه‌ای تعیین نشده — برای پیگیری هزینه‌ها یکی اضافه کنید.",
+  "budgets.category": "دسته",
+  "budgets.limit": "سقف ماهانه",
+
   "category.housing": "مسکن",
   "category.food": "خواربار",
   "category.dining": "بیرون غذا خوردن",

@@ -13,8 +13,8 @@ A full-stack personal finance tracker. Log recurring and one-off income, log exp
 backend/
   src/
     config/db.js           Mongoose connection to Atlas
-    models/                User, IncomeEntry, ExpenseEntry, Goal
-    controllers/            Route handlers (auth, income, expense, stats, goals)
+    models/                User, IncomeEntry, ExpenseEntry, Goal, Budget
+    controllers/            Route handlers (auth, income, expense, stats, goals, budgets)
     routes/                 Express routers, mounted in app.js
     services/
       statsService.js       Daily/monthly/category/trend aggregation queries
@@ -32,7 +32,7 @@ frontend/
         goals/                 Goal creation + all 4 projection algorithms
     components/
       ui/                     shadcn/ui primitives (button, input, select, card, calendar, chart, ...)
-      StatCard.tsx, TrendChart.tsx, CategoryDonut.tsx, ProjectionsPanel.tsx, SuggestionsPanel.tsx
+      StatCard.tsx, TrendChart.tsx, CategoryDonut.tsx, ProjectionsPanel.tsx, SuggestionsPanel.tsx, BudgetsPanel.tsx
       IncomeForm.tsx, ExpenseForm.tsx, RaiseForm.tsx, GoalForm.tsx, AuthForm.tsx
       DatePicker.tsx           Gregorian or Jalali calendar picker, switches on active locale
       AmountPreview.tsx        Live "≈ 40K dollars" / "≈ 40 million toman" readout under amount inputs
@@ -102,6 +102,8 @@ This builds and runs both containers (frontend on `:3000`, backend on `:5000`). 
 
 **Goal** — `name`, `targetAmount`, `targetDate` (optional).
 
+**Budget** — `category`, `monthlyLimit`. One per category per user; compared against that category's spend for whichever month is in view.
+
 All documents are scoped to `userId` and queried with that filter on every request.
 
 ## API reference
@@ -130,6 +132,11 @@ All routes are prefixed with `/api` and (except auth) require `Authorization: Be
 - `GET /api/stats/monthly?year=&month=` — `{ totalIncome, totalExpenses, netSavings }`
 - `GET /api/stats/categories?year=&month=` — spend grouped by category
 - `GET /api/stats/trend?months=6` — trailing N months of monthly summaries, oldest first
+
+**Budgets**
+- `GET /api/budgets` — list
+- `POST /api/budgets` — `{ category, monthlyLimit }`, upserts by category
+- `DELETE /api/budgets/:category`
 
 **Goals**
 - `GET /api/goals` — list

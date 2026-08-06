@@ -92,6 +92,11 @@
   "suggestions.title": "Suggestions",
   "suggestions.empty": "Pas encore assez de données pour générer des suggestions.",
 
+  "budgets.title": "Budgets",
+  "budgets.noBudgets": "Aucun budget défini pour l'instant — ajoutez-en un ci-dessous.",
+  "budgets.category": "Catégorie",
+  "budgets.limit": "Limite mensuelle",
+
   "category.housing": "Logement",
   "category.food": "Alimentation",
   "category.dining": "Restaurant",

@@ -5,13 +5,14 @@ import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Wallet } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 import type {
-  Goal, GoalProjections, MonthlySummary, CategoryBreakdownItem,
+  Goal, GoalProjections, MonthlySummary, CategoryBreakdownItem, Budget, ExpenseCategory,
 } from '@/lib/types';
 import StatCard from '@/components/StatCard';
 import TrendChart from '@/components/TrendChart';
 import CategoryDonut from '@/components/CategoryDonut';
 import GoalProgressCard from '@/components/GoalProgressCard';
 import SuggestionsPanel from '@/components/SuggestionsPanel';
+import BudgetsPanel from '@/components/BudgetsPanel';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface DailySummary {
@@ -31,23 +32,26 @@ export default function DashboardPage() {
   const [monthly, setMonthly] = useState<MonthlySummary | null>(null);
   const [trend, setTrend] = useState<MonthlySummary[]>([]);
   const [categories, setCategories] = useState<CategoryBreakdownItem[]>([]);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
   const [projections, setProjections] = useState<GoalProjections | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
-      const [dailyRes, monthlyRes, trendRes, categoriesRes, goalsRes] = await Promise.all([
+      const [dailyRes, monthlyRes, trendRes, categoriesRes, budgetsRes, goalsRes] = await Promise.all([
         apiFetch<DailySummary>('/api/stats/daily'),
         apiFetch<MonthlySummary>('/api/stats/monthly'),
         apiFetch<MonthlySummary[]>('/api/stats/trend?months=6'),
         apiFetch<CategoryBreakdownItem[]>('/api/stats/categories'),
+        apiFetch<Budget[]>('/api/budgets'),
         apiFetch<Goal[]>('/api/goals'),
       ]);
       setDaily(dailyRes);
       setMonthly(monthlyRes);
       setTrend(trendRes);
       setCategories(categoriesRes);
+      setBudgets(budgetsRes);
       setGoals(goalsRes);
 
       if (goalsRes.length > 0) {
@@ -58,6 +62,16 @@ export default function DashboardPage() {
     }
     load();
   }, []);
+
+  async function saveBudget(category: ExpenseCategory, monthlyLimit: number) {
+    const budget = await apiFetch<Budget>('/api/budgets', { method: 'POST', body: JSON.stringify({ category, monthlyLimit }) });
+    setBudgets((prev) => [...prev.filter((b) => b.category !== category), budget]);
+  }
+
+  async function removeBudget(category: ExpenseCategory) {
+    await apiFetch(`/api/budgets/${category}`, { method: 'DELETE' });
+    setBudgets((prev) => prev.filter((b) => b.category !== category));
+  }
 
   if (loading) {
     return <div className="text-sm text-muted-foreground">{t('dashboard.loading')}</div>;
@@ -79,6 +93,10 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <TrendChart data={trend} />
         <CategoryDonut data={categories} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <BudgetsPanel budgets={budgets} spend={categories} onSave={saveBudget} onRemove={removeBudget} />
       </div>
 
       {goals.length > 0 && (
