@@ -48,22 +48,23 @@ async function remove(req, res) {
   res.status(204).send();
 }
 
-// Average trailing-3-month spend per discretionary category, used by category-cut suggestions.
+// Average trailing-3-month spend per discretionary category, used by category-cut
+// suggestions. The 3 months are independent, so fetched concurrently.
 async function trailingCategoryAverages(userId) {
   const now = new Date();
-  const months = [];
-  for (let i = 0; i < TRAILING_CATEGORY_MONTHS; i += 1) {
+  const months = Array.from({ length: TRAILING_CATEGORY_MONTHS }, (_, i) => {
     const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
-    months.push({ year: d.getUTCFullYear(), month: d.getUTCMonth() + 1 });
-  }
+    return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1 };
+  });
+
+  const breakdowns = await Promise.all(
+    months.map(({ year, month }) => statsService.categoryBreakdown(userId, year, month))
+  );
 
   const totals = {};
-  for (const { year, month } of months) {
-    const breakdown = await statsService.categoryBreakdown(userId, year, month);
-    breakdown.forEach(({ category, total }) => {
-      totals[category] = (totals[category] || 0) + total;
-    });
-  }
+  breakdowns.flat().forEach(({ category, total }) => {
+    totals[category] = (totals[category] || 0) + total;
+  });
 
   return Object.entries(totals).map(([category, total]) => ({
     category,

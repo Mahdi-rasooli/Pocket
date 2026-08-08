@@ -19,6 +19,9 @@ const expenseEntrySchema = new mongoose.Schema({
 }, { timestamps: true });
 
 expenseEntrySchema.index({ userId: 1, date: 1 });
+// Every monthly/category/trend/projection query filters by type ('recurring' vs
+// 'one-time') alongside the date range — see IncomeEntry's matching index.
+expenseEntrySchema.index({ userId: 1, type: 1, date: 1 });
 
 module.exports = mongoose.model('ExpenseEntry', expenseEntrySchema);
 module.exports.EXPENSE_CATEGORIES = EXPENSE_CATEGORIES;
