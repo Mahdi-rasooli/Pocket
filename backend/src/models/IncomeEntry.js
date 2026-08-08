@@ -12,5 +12,9 @@ const incomeEntrySchema = new mongoose.Schema({
 }, { timestamps: true });
 
 incomeEntrySchema.index({ userId: 1, startDate: 1 });
+// Every monthly/trend/projection query filters by type ('recurring' vs
+// 'one-time') alongside the date range — this lets Mongo use the index for both
+// instead of scanning all of a user's entries and filtering type in memory.
+incomeEntrySchema.index({ userId: 1, type: 1, startDate: 1 });
 
 module.exports = mongoose.model('IncomeEntry', incomeEntrySchema);

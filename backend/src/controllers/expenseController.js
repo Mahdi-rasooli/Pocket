@@ -16,17 +16,9 @@ async function list(req, res) {
   res.json(entries);
 }
 
+// Body shape/types already validated by validateBody(expenseSchemas.create).
 async function create(req, res) {
   const { amount, category, date, type, endDate, note } = req.body;
-  if (amount == null || !category || !date) {
-    return res.status(400).json({ error: 'amount, category, and date are required' });
-  }
-  if (!EXPENSE_CATEGORIES.includes(category)) {
-    return res.status(400).json({ error: `category must be one of: ${EXPENSE_CATEGORIES.join(', ')}` });
-  }
-  if (type && !['recurring', 'one-time'].includes(type)) {
-    return res.status(400).json({ error: 'type must be "recurring" or "one-time"' });
-  }
 
   const entry = await ExpenseEntry.create({
     userId: req.userId,
@@ -40,12 +32,10 @@ async function create(req, res) {
   res.status(201).json(entry);
 }
 
+// Body shape/types already validated by validateBody(expenseSchemas.update).
 async function update(req, res) {
   const { id } = req.params;
   const { amount, category, date, note } = req.body;
-  if (category && !EXPENSE_CATEGORIES.includes(category)) {
-    return res.status(400).json({ error: `category must be one of: ${EXPENSE_CATEGORIES.join(', ')}` });
-  }
 
   const updates = {};
   if (amount != null) updates.amount = amount;
@@ -104,9 +94,6 @@ async function exportCSV(req, res) {
 // missing a required field are skipped and reported back, not aborting the batch.
 async function importCSV(req, res) {
   const { csv } = req.body;
-  if (!csv) {
-    return res.status(400).json({ error: 'csv is required' });
-  }
 
   const rows = parseCSV(csv);
   const toInsert = [];

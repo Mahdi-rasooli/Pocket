@@ -18,48 +18,56 @@ function dayRange(date) {
 
 // Recurring income counts toward a month if it was active (startDate <= monthEnd
 // and endDate is null or endDate >= monthStart) at any point during that month.
+// Summed via aggregation rather than `.find()` + JS reduce — the DB only ever
+// hands back a single number per bucket instead of full documents.
 async function monthlyIncomeTotal(userId, year, month) {
   const { start, end } = monthRange(year, month);
 
-  const oneTime = await IncomeEntry.aggregate([
-    { $match: { userId, type: 'one-time', startDate: { $gte: start, $lt: end } } },
-    { $group: { _id: null, total: { $sum: '$amount' } } },
+  const [oneTime, recurring] = await Promise.all([
+    IncomeEntry.aggregate([
+      { $match: { userId, type: 'one-time', startDate: { $gte: start, $lt: end } } },
+      { $group: { _id: null, total: { $sum: '$amount' } } },
+    ]),
+    IncomeEntry.aggregate([
+      {
+        $match: {
+          userId,
+          type: 'recurring',
+          startDate: { $lt: end },
+          $or: [{ endDate: null }, { endDate: { $gte: start } }],
+        },
+      },
+      { $group: { _id: null, total: { $sum: '$amount' } } },
+    ]),
   ]);
 
-  const recurring = await IncomeEntry.find({
-    userId,
-    type: 'recurring',
-    startDate: { $lt: end },
-    $or: [{ endDate: null }, { endDate: { $gte: start } }],
-  });
-
-  const recurringTotal = recurring.reduce((sum, e) => sum + e.amount, 0);
-  const oneTimeTotal = oneTime[0]?.total || 0;
-
-  return oneTimeTotal + recurringTotal;
+  return (oneTime[0]?.total || 0) + (recurring[0]?.total || 0);
 }
 
 // Expense entries predating the recurring-expense feature have no `type` field —
 // treat those as one-time so historical totals don't silently drop.
 const ONE_TIME_OR_LEGACY = { $or: [{ type: 'one-time' }, { type: { $exists: false } }] };
+const RECURRING_ACTIVE = (end, start) => ({
+  type: 'recurring',
+  date: { $lt: end },
+  $or: [{ endDate: null }, { endDate: { $gte: start } }],
+});
 
 async function monthlyExpenseTotal(userId, year, month) {
   const { start, end } = monthRange(year, month);
 
-  const oneTime = await ExpenseEntry.aggregate([
-    { $match: { userId, ...ONE_TIME_OR_LEGACY, date: { $gte: start, $lt: end } } },
-    { $group: { _id: null, total: { $sum: '$amount' } } },
+  const [oneTime, recurring] = await Promise.all([
+    ExpenseEntry.aggregate([
+      { $match: { userId, ...ONE_TIME_OR_LEGACY, date: { $gte: start, $lt: end } } },
+      { $group: { _id: null, total: { $sum: '$amount' } } },
+    ]),
+    ExpenseEntry.aggregate([
+      { $match: { userId, ...RECURRING_ACTIVE(end, start) } },
+      { $group: { _id: null, total: { $sum: '$amount' } } },
+    ]),
   ]);
 
-  const recurring = await ExpenseEntry.find({
-    userId,
-    type: 'recurring',
-    date: { $lt: end },
-    $or: [{ endDate: null }, { endDate: { $gte: start } }],
-  });
-
-  const recurringTotal = recurring.reduce((sum, e) => sum + e.amount, 0);
-  return (oneTime[0]?.total || 0) + recurringTotal;
+  return (oneTime[0]?.total || 0) + (recurring[0]?.total || 0);
 }
 
 async function dailySummary(userId, date) {
@@ -87,21 +95,20 @@ async function monthlySummary(userId, year, month) {
 async function categoryBreakdown(userId, year, month) {
   const { start, end } = monthRange(year, month);
 
-  const oneTime = await ExpenseEntry.aggregate([
-    { $match: { userId, ...ONE_TIME_OR_LEGACY, date: { $gte: start, $lt: end } } },
-    { $group: { _id: '$category', total: { $sum: '$amount' } } },
+  const [oneTime, recurring] = await Promise.all([
+    ExpenseEntry.aggregate([
+      { $match: { userId, ...ONE_TIME_OR_LEGACY, date: { $gte: start, $lt: end } } },
+      { $group: { _id: '$category', total: { $sum: '$amount' } } },
+    ]),
+    ExpenseEntry.aggregate([
+      { $match: { userId, ...RECURRING_ACTIVE(end, start) } },
+      { $group: { _id: '$category', total: { $sum: '$amount' } } },
+    ]),
   ]);
 
-  const recurring = await ExpenseEntry.find({
-    userId,
-    type: 'recurring',
-    date: { $lt: end },
-    $or: [{ endDate: null }, { endDate: { $gte: start } }],
-  });
-
   const totals = new Map(oneTime.map((r) => [r._id, r.total]));
-  for (const entry of recurring) {
-    totals.set(entry.category, (totals.get(entry.category) || 0) + entry.amount);
+  for (const { _id: category, total } of recurring) {
+    totals.set(category, (totals.get(category) || 0) + total);
   }
 
   return [...totals.entries()]
@@ -110,15 +117,17 @@ async function categoryBreakdown(userId, year, month) {
 }
 
 // Trailing `months` months of {year, month, totalIncome, totalExpenses, netSavings}, oldest first.
+// The months are independent of each other, so they're fetched concurrently
+// instead of one at a time — a 6-month trend used to mean 6 sequential
+// round-trip pairs; now they all fire together.
 async function trend(userId, months = 6, referenceDate = new Date()) {
-  const results = [];
   const ref = new Date(referenceDate);
-  for (let i = months - 1; i >= 0; i -= 1) {
+  const targets = Array.from({ length: months }, (_, idx) => {
+    const i = months - 1 - idx;
     const d = new Date(Date.UTC(ref.getUTCFullYear(), ref.getUTCMonth() - i, 1));
-    const summary = await monthlySummary(userId, d.getUTCFullYear(), d.getUTCMonth() + 1);
-    results.push(summary);
-  }
-  return results;
+    return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1 };
+  });
+  return Promise.all(targets.map(({ year, month }) => monthlySummary(userId, year, month)));
 }
 
 module.exports = {

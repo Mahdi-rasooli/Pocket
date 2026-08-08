@@ -18,11 +18,9 @@ async function list(req, res) {
   res.json(goals);
 }
 
+// Body shape/types already validated by validateBody(goalSchemas.create).
 async function create(req, res) {
   const { name, targetAmount, targetDate } = req.body;
-  if (!name || targetAmount == null) {
-    return res.status(400).json({ error: 'name and targetAmount are required' });
-  }
   const goal = await Goal.create({ userId: req.userId, name, targetAmount, targetDate: targetDate || null });
   await goal.populate('userId', COLLABORATOR_FIELDS);
   res.status(201).json(goal);
@@ -50,22 +48,23 @@ async function remove(req, res) {
   res.status(204).send();
 }
 
-// Average trailing-3-month spend per discretionary category, used by category-cut suggestions.
+// Average trailing-3-month spend per discretionary category, used by category-cut
+// suggestions. The 3 months are independent, so fetched concurrently.
 async function trailingCategoryAverages(userId) {
   const now = new Date();
-  const months = [];
-  for (let i = 0; i < TRAILING_CATEGORY_MONTHS; i += 1) {
+  const months = Array.from({ length: TRAILING_CATEGORY_MONTHS }, (_, i) => {
     const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
-    months.push({ year: d.getUTCFullYear(), month: d.getUTCMonth() + 1 });
-  }
+    return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1 };
+  });
+
+  const breakdowns = await Promise.all(
+    months.map(({ year, month }) => statsService.categoryBreakdown(userId, year, month))
+  );
 
   const totals = {};
-  for (const { year, month } of months) {
-    const breakdown = await statsService.categoryBreakdown(userId, year, month);
-    breakdown.forEach(({ category, total }) => {
-      totals[category] = (totals[category] || 0) + total;
-    });
-  }
+  breakdowns.flat().forEach(({ category, total }) => {
+    totals[category] = (totals[category] || 0) + total;
+  });
 
   return Object.entries(totals).map(([category, total]) => ({
     category,
@@ -106,10 +105,10 @@ async function projections(req, res) {
 
 // Only the goal's owner can invite/remove collaborators. Invitees must already have
 // a Pocket account (no email invite flow) — looked up by email.
+// email already validated by validateBody(goalSchemas.inviteCollaborator).
 async function addCollaborator(req, res) {
   const { id } = req.params;
   const { email } = req.body;
-  if (!email) return res.status(400).json({ error: 'email is required' });
 
   const goal = await Goal.findOne({ _id: id, userId: req.userId });
   if (!goal) return res.status(404).json({ error: 'Goal not found' });
