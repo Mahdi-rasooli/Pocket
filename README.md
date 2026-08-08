@@ -6,7 +6,7 @@ A full-stack personal finance tracker. Log recurring and one-off income, log exp
 
 ## Stack
 - **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS, [shadcn/ui](https://ui.shadcn.com) components, `lucide-react` icons, `framer-motion` animation, `recharts` charts (via shadcn's `chart.tsx` wrapper), `next-themes` (light/dark), `date-fns` / `date-fns-jalali` (Gregorian + Jalali date pickers).
-- **Backend**: Node.js + Express, MongoDB Atlas via Mongoose, JWT auth (`bcryptjs` for password hashing).
+- **Backend**: Node.js + Express, MongoDB Atlas via Mongoose, JWT auth (`bcryptjs` for password hashing), `zod` request validation, `helmet` + `express-rate-limit` hardening.
 - **Infra**: Docker Compose for local/prod-like runs. MongoDB stays on Atlas — it is never containerized.
 - **Localization**: English, Persian (فارسی, RTL), and French — client-side, no routing change. Multi-currency display (USD, EUR, IRR, JPY) with static/approximate conversion rates.
 
@@ -18,11 +18,15 @@ backend/
     models/                User, IncomeEntry, ExpenseEntry, Goal, Budget
     controllers/            Route handlers (auth, income, expense, stats, goals, budgets)
     routes/                 Express routers, mounted in app.js
+    schemas/                 zod request-validation schemas, one file per resource
+    middleware/
+      auth.js                 JWT verification, sets req.userId
+      validate.js              validateBody / validateQuery / validateObjectIdParam
+      rateLimiters.js           authLimiter, apiLimiter
     services/
       statsService.js       Daily/monthly/category/trend aggregation queries
       projections.js         The 4 goal-projection algorithms (pure functions)
       suggestions.js          Turns projection output into plain-language sentences
-    middleware/auth.js      JWT verification, sets req.userId
     app.js / server.js      Express app wiring / entrypoint
 frontend/
   src/
@@ -74,6 +78,7 @@ cp frontend/.env.example frontend/.env.local
 | `MONGODB_URI` | MongoDB Atlas connection string (e.g. `mongodb+srv://user:pass@cluster.mongodb.net/pocket`) |
 | `JWT_SECRET` | Long random string used to sign JWTs (`openssl rand -hex 32` works well) |
 | `PORT` | Port the API listens on (default `5000`) |
+| `CORS_ORIGIN` | Optional, comma-separated allowed frontend origin(s). Unset allows all origins (fine for local dev; set this before deploying). |
 
 `frontend/.env.local`:
 | Var | Description |
@@ -152,6 +157,16 @@ Income supports the same `GET /api/income/export` / `POST /api/income/import` pa
 - `GET /api/goals/:id/projections` — runs all four algorithms below and returns them together with plain-language suggestions
 - `POST /api/goals/:id/collaborators` — `{ email }`, owner-only, invitee must already have a Pocket account
 - `DELETE /api/goals/:id/collaborators/:userId` — owner-only
+
+## Security & performance
+- **Rate limiting**: `express-rate-limit`, applied globally to `/api` (600 req/15min per IP) and more strictly to `/api/auth` (20 req/15min per IP) since login/register are the brute-force target.
+- **Security headers**: `helmet` (sets `X-Content-Type-Options`, `X-Frame-Options`, strips `X-Powered-By`, etc.).
+- **CORS**: restricted via `CORS_ORIGIN` (see env vars above); unset defaults to allow-all for local dev.
+- **Request body size**: capped at 2mb (`express.json({ limit: '2mb' })`) — generous enough for a CSV import, far above any normal JSON payload the app sends.
+- **Input validation**: every mutating route and stats query is validated with [zod](https://zod.dev) schemas (`backend/src/schemas/`) via `validateBody`/`validateQuery` middleware (`backend/src/middleware/validate.js`), replacing ad-hoc `if (!x)` checks. This rejects type-confusion payloads (e.g. `{"email": {"$ne": null}}`) outright instead of relying on incidental crashes, and enforces sane bounds (amounts capped, `stats/trend?months=` clamped to 1–24 — it used to loop that many times doing sequential DB round trips per iteration, an easy DoS via a huge value).
+- **Malformed `:id` route params** (e.g. `DELETE /api/income/not-an-id`) are caught by `validateObjectIdParam` and return a clean 400, instead of a Mongoose `CastError` leaking through as a 500.
+- **Password policy**: minimum 8 characters on registration (previously any non-empty string was accepted).
+- **Query performance**: recurring income/expense totals (`statsService.js`) are summed via MongoDB `$group` aggregation instead of `.find()` + JS-side `reduce()` — the DB returns one number per bucket instead of full documents. The 6-month dashboard trend and 3-month category-average queries fetch their (independent) months concurrently via `Promise.all` instead of one at a time. `IncomeEntry`/`ExpenseEntry` have a `{userId, type, date}` compound index so the `type` filter every query already applies is index-served, not scanned in memory.
 
 ## The four projection algorithms
 Computed in `backend/src/services/projections.js` from the trailing 6 months of `{totalIncome, totalExpenses, netSavings}` (via `statsService.trend`):
