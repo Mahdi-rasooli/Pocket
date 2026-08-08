@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 
+const { apiLimiter } = require('./middleware/rateLimiters');
 const authRoutes = require('./routes/authRoutes');
 const incomeRoutes = require('./routes/incomeRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
@@ -10,8 +12,15 @@ const budgetRoutes = require('./routes/budgetRoutes');
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+// CORS_ORIGIN unset keeps the previous wide-open behavior (fine for local dev);
+// set it (comma-separated for multiple) to lock this down before deploying.
+const corsOrigin = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim()) : true;
+app.use(cors({ origin: corsOrigin }));
+app.use(helmet());
+// 2mb accommodates a reasonably large CSV import, well beyond any JSON payload
+// (bcrypt-hashed auth, single transaction/goal/budget bodies) the app otherwise sends.
+app.use(express.json({ limit: '2mb' }));
+app.use('/api', apiLimiter);
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 

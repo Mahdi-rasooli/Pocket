@@ -8,14 +8,9 @@ async function list(req, res) {
   res.json(entries);
 }
 
+// Body shape/types already validated by validateBody(incomeSchemas.create).
 async function create(req, res) {
   const { amount, source, type, startDate, endDate, note } = req.body;
-  if (amount == null || !source || !type || !startDate) {
-    return res.status(400).json({ error: 'amount, source, type, and startDate are required' });
-  }
-  if (!['recurring', 'one-time'].includes(type)) {
-    return res.status(400).json({ error: 'type must be "recurring" or "one-time"' });
-  }
 
   const entry = await IncomeEntry.create({
     userId: req.userId,
@@ -34,9 +29,6 @@ async function create(req, res) {
 async function replace(req, res) {
   const { id } = req.params;
   const { amount, source, effectiveDate, note } = req.body;
-  if (amount == null || !effectiveDate) {
-    return res.status(400).json({ error: 'amount and effectiveDate are required' });
-  }
 
   const previous = await IncomeEntry.findOne({ _id: id, userId: req.userId });
   if (!previous) {
@@ -99,9 +91,6 @@ async function exportCSV(req, res) {
 // missing a required field are skipped and reported back, not aborting the batch.
 async function importCSV(req, res) {
   const { csv } = req.body;
-  if (!csv) {
-    return res.status(400).json({ error: 'csv is required' });
-  }
 
   const rows = parseCSV(csv);
   const toInsert = [];

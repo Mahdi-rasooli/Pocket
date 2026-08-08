@@ -18,11 +18,9 @@ async function list(req, res) {
   res.json(goals);
 }
 
+// Body shape/types already validated by validateBody(goalSchemas.create).
 async function create(req, res) {
   const { name, targetAmount, targetDate } = req.body;
-  if (!name || targetAmount == null) {
-    return res.status(400).json({ error: 'name and targetAmount are required' });
-  }
   const goal = await Goal.create({ userId: req.userId, name, targetAmount, targetDate: targetDate || null });
   await goal.populate('userId', COLLABORATOR_FIELDS);
   res.status(201).json(goal);
@@ -106,10 +104,10 @@ async function projections(req, res) {
 
 // Only the goal's owner can invite/remove collaborators. Invitees must already have
 // a Pocket account (no email invite flow) — looked up by email.
+// email already validated by validateBody(goalSchemas.inviteCollaborator).
 async function addCollaborator(req, res) {
   const { id } = req.params;
   const { email } = req.body;
-  if (!email) return res.status(400).json({ error: 'email is required' });
 
   const goal = await Goal.findOne({ _id: id, userId: req.userId });
   if (!goal) return res.status(404).json({ error: 'Goal not found' });
