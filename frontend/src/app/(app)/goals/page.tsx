@@ -90,8 +90,8 @@ export default function GoalsPage() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">{t('goals.title')}</h1>
-        <p className="text-sm text-muted-foreground">{t('goals.subtitle')}</p>
+        <h1 className="text-2xl md:text-3xl font-semibold">{t('goals.title')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('goals.subtitle')}</p>
       </div>
 
       <motion.div variants={cardVariants}>

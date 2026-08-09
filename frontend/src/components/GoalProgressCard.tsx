@@ -26,10 +26,13 @@ export default function GoalProgressCard({ goal, currentSaved, onClick, active }
   const pct = goal.targetAmount > 0 ? Math.min((currentSaved / goal.targetAmount) * 100, 100) : 0;
 
   return (
-    <motion.div variants={cardVariants}>
+    <motion.div variants={cardVariants} whileHover={onClick ? { y: -2 } : undefined}>
       <Card
         onClick={onClick}
-        className={cn(onClick && 'cursor-pointer transition-colors', active && 'border-brand')}
+        className={cn(
+          onClick && 'cursor-pointer hover:border-brand/40',
+          active && 'border-brand shadow-glow'
+        )}
       >
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-3">
@@ -37,16 +40,16 @@ export default function GoalProgressCard({ goal, currentSaved, onClick, active }
               <div className="bg-brand/15 text-brand p-1.5 rounded-lg">
                 <Target size={16} />
               </div>
-              <p className="font-medium">{goal.name}</p>
+              <p className="font-heading font-medium">{goal.name}</p>
             </div>
-            <p className="text-xs text-muted-foreground">{Math.round(pct)}%</p>
+            <p className="text-xs text-muted-foreground font-medium">{Math.round(pct)}%</p>
           </div>
           <div className="h-2 rounded-full bg-surface-border overflow-hidden mb-2">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${pct}%` }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="h-full bg-brand rounded-full"
+              className="h-full bg-gradient-to-r from-brand-light to-brand rounded-full"
             />
           </div>
           <p className="text-xs text-muted-foreground">
