@@ -25,16 +25,16 @@ const cardVariants = {
 
 export default function StatCard({ label, value, icon: Icon, tone = 'brand' }: Props) {
   return (
-    <motion.div variants={cardVariants}>
-      <Card>
+    <motion.div variants={cardVariants} whileHover={{ y: -3 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
+      <Card className="hover:border-brand/30 hover:shadow-xl hover:shadow-black/10">
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-4">
-            <p className="text-sm text-muted-foreground">{label}</p>
+            <p className="text-sm text-muted-foreground font-medium">{label}</p>
             <div className={`p-2 rounded-lg ${toneClasses[tone]}`}>
               <Icon size={18} />
             </div>
           </div>
-          <p className="text-2xl font-semibold tracking-tight">
+          <p className="font-heading text-2xl md:text-3xl font-semibold tracking-tight">
             <CountUp value={value} />
           </p>
         </CardContent>

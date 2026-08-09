@@ -80,8 +80,8 @@ export default function DashboardPage() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">{t('dashboard.title')}</h1>
-        <p className="text-sm text-muted-foreground">{t('dashboard.subtitle')}</p>
+        <h1 className="text-2xl md:text-3xl font-semibold">{t('dashboard.title')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('dashboard.subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
