@@ -79,8 +79,8 @@ export default function TransactionsPage() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">{t('transactions.title')}</h1>
-        <p className="text-sm text-muted-foreground">{t('transactions.subtitle')}</p>
+        <h1 className="text-2xl md:text-3xl font-semibold">{t('transactions.title')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('transactions.subtitle')}</p>
       </div>
 
       <motion.div variants={cardVariants}>
@@ -89,7 +89,7 @@ export default function TransactionsPage() {
             <div className="flex items-center justify-between gap-2 mb-4">
               <div className="flex items-center gap-2">
                 <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
-                <p className="font-medium">{t('transactions.income')}</p>
+                <p className="font-heading font-medium">{t('transactions.income')}</p>
               </div>
               <CsvActions exportUrl="/api/income/export" importUrl="/api/income/import" filename="pocket-income.csv" onImported={loadIncome} />
             </div>
@@ -97,7 +97,7 @@ export default function TransactionsPage() {
             <div className="mt-5 space-y-2">
               {income.length === 0 && <p className="text-sm text-muted-foreground">{t('transactions.noIncome')}</p>}
               {income.map((entry) => (
-                <div key={entry._id} className="border-b border-surface-border last:border-0 py-2">
+                <div key={entry._id} className="border-b border-surface-border last:border-0 py-2 px-2 -mx-2 rounded-lg transition-colors hover:bg-surface-card/60">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm">
@@ -151,7 +151,7 @@ export default function TransactionsPage() {
             <div className="flex items-center justify-between gap-2 mb-4">
               <div className="flex items-center gap-2">
                 <div className="bg-red-500/15 text-red-400 p-1.5 rounded-lg"><TrendingDown size={16} /></div>
-                <p className="font-medium">{t('transactions.expenses')}</p>
+                <p className="font-heading font-medium">{t('transactions.expenses')}</p>
               </div>
               <CsvActions exportUrl="/api/expenses/export" importUrl="/api/expenses/import" filename="pocket-expenses.csv" onImported={loadExpenses} />
             </div>
@@ -159,7 +159,7 @@ export default function TransactionsPage() {
             <div className="mt-5 space-y-2">
               {expenses.length === 0 && <p className="text-sm text-muted-foreground">{t('transactions.noExpenses')}</p>}
               {expenses.map((entry) => (
-                <div key={entry._id} className="flex items-center justify-between gap-3 border-b border-surface-border last:border-0 py-2">
+                <div key={entry._id} className="flex items-center justify-between gap-3 border-b border-surface-border last:border-0 py-2 px-2 -mx-2 rounded-lg transition-colors hover:bg-surface-card/60">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm">
                       <span className="font-medium">{format(entry.amount)}</span>
