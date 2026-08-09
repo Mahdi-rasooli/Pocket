@@ -21,13 +21,13 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-full md:w-56 md:min-h-screen border-b md:border-b-0 md:border-r border-surface-border px-4 py-5 flex md:flex-col justify-between">
+    <aside className="w-full md:w-60 md:min-h-screen md:sticky md:top-0 border-b md:border-b-0 md:border-r border-surface-border bg-surface/80 backdrop-blur-sm px-4 py-5 flex md:flex-col justify-between">
       <div>
-        <div className="flex items-center gap-2 mb-8 px-2">
-          <div className="bg-brand/15 text-brand p-2 rounded-xl">
+        <div className="flex items-center gap-2.5 mb-8 px-2">
+          <div className="bg-gradient-to-br from-brand to-brand-dark text-white p-2 rounded-xl shadow-glow">
             <Wallet size={20} />
           </div>
-          <span className="font-semibold text-lg">Pocket</span>
+          <span className="font-heading font-semibold text-lg tracking-tight">Pocket</span>
         </div>
         <nav className="flex md:flex-col gap-1">
           {links.map(({ href, label, icon: Icon }) => {
@@ -36,10 +36,15 @@ export default function Sidebar() {
               <Link
                 key={href}
                 href={href}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                  active ? 'bg-brand/15 text-brand' : 'text-muted-foreground hover:bg-surface-card hover:text-foreground'
+                className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  active
+                    ? 'bg-brand/15 text-brand'
+                    : 'text-muted-foreground hover:bg-surface-card hover:text-foreground hover:translate-x-0.5'
                 }`}
               >
+                {active && (
+                  <span className="hidden md:block absolute inset-y-1 -left-4 w-1 rounded-full bg-brand" />
+                )}
                 <Icon size={18} />
                 {label}
               </Link>
@@ -47,7 +52,7 @@ export default function Sidebar() {
           })}
         </nav>
       </div>
-      <div className="hidden md:block px-2 space-y-3">
+      <div className="hidden md:block px-2 space-y-3 pt-4 border-t border-surface-border">
         <div className="flex items-center justify-between">
           <LanguageSwitcher />
           <CurrencySwitcher />
