@@ -11,11 +11,35 @@
 }
 
 body {
-  @apply bg-surface text-foreground antialiased;
+  @apply bg-surface text-foreground antialiased font-sans;
+}
+
+h1, h2, h3, h4 {
+  @apply font-heading tracking-tight;
 }
 
 .card {
-  @apply bg-surface-card border border-surface-border rounded-2xl p-5 shadow-lg shadow-black/20;
+  @apply bg-surface-card border border-surface-border rounded-2xl p-5 shadow-lg shadow-black/20 transition-shadow duration-300;
+}
+
+::selection {
+  @apply bg-brand/30;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 @layer base {
