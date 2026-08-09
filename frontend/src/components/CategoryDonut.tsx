@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell } from 'recharts';
+import { PieChart as PieChartIcon } from 'lucide-react';
 import type { CategoryBreakdownItem } from '@/lib/types';
 import { CATEGORY_COLORS, formatCategory } from '@/lib/format';
 import { Card, CardContent } from '@/components/ui/card';
@@ -31,7 +32,7 @@ export default function CategoryDonut({ data }: { data: CategoryBreakdownItem[] 
     <motion.div variants={cardVariants}>
       <Card>
         <CardContent className="pt-6">
-          <p className="text-sm text-muted-foreground mb-4">{t('dashboard.categoryTitle')}</p>
+          <p className="font-heading text-sm font-medium text-muted-foreground mb-4">{t('dashboard.categoryTitle')}</p>
           {hasData ? (
             <ChartContainer config={chartConfig} className="mx-auto aspect-auto h-[260px]">
               <PieChart>
@@ -42,17 +43,19 @@ export default function CategoryDonut({ data }: { data: CategoryBreakdownItem[] 
                   nameKey="category"
                   innerRadius={60}
                   outerRadius={90}
-                  paddingAngle={2}
+                  paddingAngle={3}
+                  cornerRadius={4}
                 >
                   {data.map((entry) => (
-                    <Cell key={entry.category} fill={CATEGORY_COLORS[entry.category] || '#64748b'} />
+                    <Cell key={entry.category} fill={CATEGORY_COLORS[entry.category] || '#64748b'} stroke="none" />
                   ))}
                 </Pie>
                 <ChartLegend content={<ChartLegendContent nameKey="category" />} />
               </PieChart>
             </ChartContainer>
           ) : (
-            <div className="h-[260px] flex items-center justify-center text-sm text-muted-foreground">
+            <div className="h-[260px] flex flex-col items-center justify-center gap-2 text-sm text-muted-foreground">
+              <PieChartIcon size={28} className="opacity-40" />
               {t('dashboard.noExpenses')}
             </div>
           )}
