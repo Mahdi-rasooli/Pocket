@@ -95,7 +95,11 @@ export default function TransactionsPage() {
             </div>
             <IncomeForm onSubmit={addIncome} />
             <div className="mt-5 space-y-2">
-              {income.length === 0 && <p className="text-sm text-muted-foreground">{t('transactions.noIncome')}</p>}
+              {income.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-6 border border-dashed border-surface-border rounded-xl">
+                  {t('transactions.noIncome')}
+                </p>
+              )}
               {income.map((entry) => (
                 <div key={entry._id} className="border-b border-surface-border last:border-0 py-2 px-2 -mx-2 rounded-lg transition-colors hover:bg-surface-card/60">
                   <div className="flex items-center justify-between gap-3">
@@ -157,7 +161,11 @@ export default function TransactionsPage() {
             </div>
             <ExpenseForm onSubmit={addExpense} />
             <div className="mt-5 space-y-2">
-              {expenses.length === 0 && <p className="text-sm text-muted-foreground">{t('transactions.noExpenses')}</p>}
+              {expenses.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-6 border border-dashed border-surface-border rounded-xl">
+                  {t('transactions.noExpenses')}
+                </p>
+              )}
               {expenses.map((entry) => (
                 <div key={entry._id} className="flex items-center justify-between gap-3 border-b border-surface-border last:border-0 py-2 px-2 -mx-2 rounded-lg transition-colors hover:bg-surface-card/60">
                   <div className="flex-1 min-w-0">

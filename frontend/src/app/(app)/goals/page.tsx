@@ -107,7 +107,9 @@ export default function GoalsPage() {
       </motion.div>
 
       {goals.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t('goals.noGoals')}</p>
+        <p className="text-sm text-muted-foreground text-center py-8 border border-dashed border-surface-border rounded-xl">
+          {t('goals.noGoals')}
+        </p>
       ) : (
         <>
           <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
