@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { motion } from 'framer-motion';
-import { Wallet } from 'lucide-react';
+import { Wallet, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { ApiError } from '@/lib/api';
 import { Button } from '@/components/ui/button';
@@ -87,6 +87,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
               {error && <p className="text-sm text-destructive">{error}</p>}
 
               <Button type="submit" disabled={submitting} className="w-full">
+                {submitting && <Loader2 size={16} className="animate-spin" />}
                 {submitting ? t('auth.pleaseWait') : mode === 'login' ? t('auth.login') : t('auth.register')}
               </Button>
             </form>

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import Sidebar from '@/components/Sidebar';
+import PageLoader from '@/components/PageLoader';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -13,7 +14,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     if (!loading && !user) router.replace('/login');
   }, [user, loading, router]);
 
-  if (loading || !user) return null;
+  // Show the branded loader instead of a blank screen while the auth check
+  // resolves and right after register/login while redirecting to /dashboard.
+  if (loading || !user) return <PageLoader />;
 
   return (
     <div className="flex flex-col md:flex-row">

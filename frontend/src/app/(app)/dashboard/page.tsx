@@ -8,6 +8,7 @@ import type {
   Goal, GoalProjections, MonthlySummary, CategoryBreakdownItem, Budget, ExpenseCategory,
 } from '@/lib/types';
 import StatCard from '@/components/StatCard';
+import PageLoader from '@/components/PageLoader';
 import TrendChart from '@/components/TrendChart';
 import CategoryDonut from '@/components/CategoryDonut';
 import GoalProgressCard from '@/components/GoalProgressCard';
@@ -74,7 +75,7 @@ export default function DashboardPage() {
   }
 
   if (loading) {
-    return <div className="text-sm text-muted-foreground">{t('dashboard.loading')}</div>;
+    return <PageLoader label={t('dashboard.loading')} />;
   }
 
   return (

@@ -10,6 +10,7 @@ import IncomeForm from '@/components/IncomeForm';
 import ExpenseForm from '@/components/ExpenseForm';
 import RaiseForm from '@/components/RaiseForm';
 import CsvActions from '@/components/CsvActions';
+import PageLoader from '@/components/PageLoader';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n/i18n-context';
@@ -73,7 +74,7 @@ export default function TransactionsPage() {
   }
 
   if (loading) {
-    return <div className="text-sm text-muted-foreground">{t('transactions.loading')}</div>;
+    return <PageLoader label={t('transactions.loading')} />;
   }
 
   return (

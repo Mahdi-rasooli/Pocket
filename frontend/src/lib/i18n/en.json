@@ -1,4 +1,5 @@
 {
+  "common.loading": "Loading your finances…",
   "nav.dashboard": "Dashboard",
   "nav.transactions": "Transactions",
   "nav.goals": "Goals",

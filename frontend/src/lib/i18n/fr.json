@@ -1,4 +1,5 @@
 {
+  "common.loading": "Chargement de vos finances…",
   "nav.dashboard": "Tableau de bord",
   "nav.transactions": "Transactions",
   "nav.goals": "Objectifs",

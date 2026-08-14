@@ -10,6 +10,7 @@ import GoalProgressCard from '@/components/GoalProgressCard';
 import ProjectionsPanel from '@/components/ProjectionsPanel';
 import SuggestionsPanel from '@/components/SuggestionsPanel';
 import ShareGoalPanel from '@/components/ShareGoalPanel';
+import PageLoader from '@/components/PageLoader';
 import { Card, CardContent } from '@/components/ui/card';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { useCurrency } from '@/lib/currency-context';
@@ -84,7 +85,7 @@ export default function GoalsPage() {
   const selectedGoal = goals.find((g) => g._id === selectedId);
 
   if (loading) {
-    return <div className="text-sm text-muted-foreground">{t('goals.loading')}</div>;
+    return <PageLoader label={t('goals.loading')} />;
   }
 
   return (
