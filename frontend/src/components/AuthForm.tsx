@@ -39,8 +39,21 @@ export default function AuthForm({ mode, onSubmit }: Props) {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
-      <div className="pointer-events-none absolute -top-32 -left-32 h-72 w-72 rounded-full bg-brand/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 -right-32 h-72 w-72 rounded-full bg-sky-500/15 blur-3xl" />
+      <motion.div
+        className="pointer-events-none absolute -top-32 -left-32 h-72 w-72 rounded-full bg-brand/20 blur-3xl"
+        animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="pointer-events-none absolute -bottom-32 -right-32 h-72 w-72 rounded-full bg-sky-500/15 blur-3xl"
+        animate={{ x: [0, -25, 0], y: [0, -15, 0] }}
+        transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="pointer-events-none absolute top-1/3 right-1/4 h-40 w-40 rounded-full bg-brand-light/10 blur-2xl"
+        animate={{ opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
