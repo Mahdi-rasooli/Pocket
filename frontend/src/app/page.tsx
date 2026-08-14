@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
+import PageLoader from '@/components/PageLoader';
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -13,5 +14,5 @@ export default function Home() {
     router.replace(user ? '/dashboard' : '/login');
   }, [user, loading, router]);
 
-  return null;
+  return <PageLoader />;
 }
