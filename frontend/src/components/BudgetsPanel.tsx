@@ -56,11 +56,13 @@ export default function BudgetsPanel({ budgets, spend, onSave, onRemove }: Props
         <CardContent className="pt-6">
           <div className="flex items-center gap-2 mb-4">
             <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><Wallet2 size={16} /></div>
-            <p className="font-medium">{t('budgets.title')}</p>
+            <p className="font-heading font-medium">{t('budgets.title')}</p>
           </div>
 
           {budgets.length === 0 && (
-            <p className="text-sm text-muted-foreground mb-4">{t('budgets.noBudgets')}</p>
+            <p className="text-sm text-muted-foreground text-center py-6 mb-4 border border-dashed border-surface-border rounded-xl">
+              {t('budgets.noBudgets')}
+            </p>
           )}
 
           <div className="space-y-4 mb-4">
@@ -68,20 +70,28 @@ export default function BudgetsPanel({ budgets, spend, onSave, onRemove }: Props
               const spent = spendByCategory.get(budget.category) || 0;
               const pct = budget.monthlyLimit > 0 ? Math.min((spent / budget.monthlyLimit) * 100, 100) : 0;
               const over = spent > budget.monthlyLimit;
-              const barColor = over ? 'bg-red-500' : pct >= 80 ? 'bg-amber-500' : 'bg-brand';
+              const nearLimit = !over && pct >= 80;
+              const barColor = over ? 'bg-red-500' : nearLimit ? 'bg-amber-500' : 'bg-gradient-to-r from-brand-light to-brand';
 
               return (
-                <div key={budget.category}>
+                <div key={budget.category} className="group rounded-lg -mx-2 px-2 py-1.5 transition-colors hover:bg-surface-card/60">
                   <div className="flex items-center justify-between mb-1.5">
-                    <p className="text-sm">{formatCategory(budget.category, t)}</p>
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-sm">{formatCategory(budget.category, t)}</p>
+                      {over && (
+                        <span className="text-[10px] font-medium uppercase tracking-wide text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded">
+                          {t('budgets.over')}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex items-center gap-2">
-                      <p className={cn('text-xs', over ? 'text-red-400' : 'text-muted-foreground')}>
+                      <p className={cn('text-xs tabular-nums', over ? 'text-red-400 font-medium' : 'text-muted-foreground')}>
                         {format(spent)} / {format(budget.monthlyLimit)}
                       </p>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-auto w-auto p-0 text-muted-foreground hover:text-red-400 hover:bg-transparent"
+                        className="h-auto w-auto p-0 text-muted-foreground opacity-60 group-hover:opacity-100 hover:text-red-400 hover:bg-transparent transition-opacity"
                         onClick={() => onRemove(budget.category)}
                       >
                         <X size={13} />

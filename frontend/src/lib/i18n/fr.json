@@ -97,6 +97,7 @@
 
   "budgets.title": "Budgets",
   "budgets.noBudgets": "Aucun budget défini pour l'instant — ajoutez-en un ci-dessous.",
+  "budgets.over": "Dépassé",
   "budgets.category": "Catégorie",
   "budgets.limit": "Limite mensuelle",
 

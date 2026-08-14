@@ -97,6 +97,7 @@
 
   "budgets.title": "Budgets",
   "budgets.noBudgets": "No budgets set yet — add one below to track spending against a limit.",
+  "budgets.over": "Over",
   "budgets.category": "Category",
   "budgets.limit": "Monthly limit",
 

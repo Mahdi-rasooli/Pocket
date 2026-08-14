@@ -97,6 +97,7 @@
 
   "budgets.title": "بودجه‌ها",
   "budgets.noBudgets": "هنوز بودجه‌ای تعیین نشده — برای پیگیری هزینه‌ها یکی اضافه کنید.",
+  "budgets.over": "بیش از حد",
   "budgets.category": "دسته",
   "budgets.limit": "سقف ماهانه",
 
