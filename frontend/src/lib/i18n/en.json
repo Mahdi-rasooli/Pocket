@@ -78,6 +78,7 @@
   "goals.sharedBy": "Shared by {name}",
   "goals.invite": "Invite",
   "goals.inviteEmailPlaceholder": "Invite by email",
+  "goals.removeCollaborator": "Remove collaborator",
 
   "projections.averageRate": "Average savings rate",
   "projections.weightedTrend": "Weighted recent-trend",

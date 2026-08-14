@@ -78,6 +78,7 @@
   "goals.sharedBy": "به اشتراک‌گذاشته توسط {name}",
   "goals.invite": "دعوت",
   "goals.inviteEmailPlaceholder": "دعوت با ایمیل",
+  "goals.removeCollaborator": "حذف همکار",
 
   "projections.averageRate": "میانگین نرخ پس‌انداز",
   "projections.weightedTrend": "روند اخیر وزن‌دار",

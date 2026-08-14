@@ -78,6 +78,7 @@
   "goals.sharedBy": "Partagé par {name}",
   "goals.invite": "Inviter",
   "goals.inviteEmailPlaceholder": "Inviter par e-mail",
+  "goals.removeCollaborator": "Retirer le collaborateur",
 
   "projections.averageRate": "Taux d'épargne moyen",
   "projections.weightedTrend": "Tendance récente pondérée",

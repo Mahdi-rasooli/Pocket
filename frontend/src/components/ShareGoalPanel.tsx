@@ -20,7 +20,10 @@ interface Props {
 export default function ShareGoalPanel({ goal, onInvite, onRemove }: Props) {
   const { t } = useI18n();
   const { user } = useAuth();
-  const isOwner = user?.id === goal.userId._id;
+  // goal.userId/collaborators are populated server-side, but can briefly be
+  // absent from a stale client cache (e.g. right after creating a goal) — guard
+  // against that instead of crashing.
+  const isOwner = !!user && !!goal.userId && user.id === goal.userId._id;
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -41,26 +44,34 @@ export default function ShareGoalPanel({ goal, onInvite, onRemove }: Props) {
 
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-      <Users size={13} />
-      {!isOwner && <span>{t('goals.sharedBy').replace('{name}', goal.userId.name)}</span>}
-      {goal.collaborators.map((c) => (
-        <span key={c._id} className="inline-flex items-center gap-1 bg-surface border border-surface-border rounded-full px-2 py-0.5">
+      <Users size={13} className="text-brand shrink-0" />
+      {!isOwner && goal.userId && <span>{t('goals.sharedBy').replace('{name}', goal.userId.name)}</span>}
+      {goal.collaborators?.filter(Boolean).map((c) => (
+        <span
+          key={c._id}
+          className="inline-flex items-center gap-1.5 bg-surface border border-surface-border rounded-full pl-2.5 pr-1.5 py-1"
+        >
           {c.name}
           {isOwner && (
-            <button type="button" onClick={() => onRemove(c._id)} className="hover:text-red-400">
+            <button
+              type="button"
+              onClick={() => onRemove(c._id)}
+              className="rounded-full p-0.5 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+              aria-label={t('goals.removeCollaborator')}
+            >
               <X size={11} />
             </button>
           )}
         </span>
       ))}
       {isOwner && (
-        <form onSubmit={handleInvite} className="flex items-center gap-1">
+        <form onSubmit={handleInvite} className="flex items-center gap-1.5">
           <Input
             type="email" value={email} onChange={(e) => setEmail(e.target.value)}
             placeholder={t('goals.inviteEmailPlaceholder')}
-            className="h-7 w-44 text-xs"
+            className="h-7 w-44 text-xs rounded-full px-3"
           />
-          <Button type="submit" size="sm" variant="ghost" className="h-7 px-2 text-xs" disabled={submitting || !email}>
+          <Button type="submit" size="sm" variant="ghost" className="h-7 px-2.5 text-xs rounded-full text-brand hover:bg-brand/10 hover:text-brand" disabled={submitting || !email}>
             {t('goals.invite')}
           </Button>
         </form>
