@@ -34,16 +34,32 @@ export default function TrendChart({ data }: { data: MonthlySummary[] }) {
     <motion.div variants={cardVariants}>
       <Card>
         <CardContent className="pt-6">
-          <p className="text-sm text-muted-foreground mb-4">{t('dashboard.trendTitle')}</p>
+          <p className="font-heading text-sm font-medium text-muted-foreground mb-4">{t('dashboard.trendTitle')}</p>
           <ChartContainer config={chartConfig} className="aspect-auto h-[260px] w-full">
             <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
               <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
               <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} width={40} />
               <ChartTooltip content={<ChartTooltipContent formatter={(value) => format(Number(value))} />} />
               <ChartLegend content={<ChartLegendContent />} />
-              <Line type="monotone" dataKey="income" stroke="var(--color-income)" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="expenses" stroke="var(--color-expenses)" strokeWidth={2} dot={false} />
+              <Line
+                type="monotone"
+                dataKey="income"
+                stroke="var(--color-income)"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                dot={false}
+                activeDot={{ r: 5, strokeWidth: 0 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="expenses"
+                stroke="var(--color-expenses)"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                dot={false}
+                activeDot={{ r: 5, strokeWidth: 0 }}
+              />
             </LineChart>
           </ChartContainer>
         </CardContent>

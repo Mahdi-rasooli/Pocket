@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { motion } from 'framer-motion';
-import { Wallet } from 'lucide-react';
+import { Wallet, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { ApiError } from '@/lib/api';
 import { Button } from '@/components/ui/button';
@@ -38,20 +38,35 @@ export default function AuthForm({ mode, onSubmit }: Props) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+      <motion.div
+        className="pointer-events-none absolute -top-32 -left-32 h-72 w-72 rounded-full bg-brand/20 blur-3xl"
+        animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="pointer-events-none absolute -bottom-32 -right-32 h-72 w-72 rounded-full bg-sky-500/15 blur-3xl"
+        animate={{ x: [0, -25, 0], y: [0, -15, 0] }}
+        transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="pointer-events-none absolute top-1/3 right-1/4 h-40 w-40 rounded-full bg-brand-light/10 blur-2xl"
+        animate={{ opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-sm"
+        className="w-full max-w-sm relative"
       >
-        <Card>
+        <Card className="shadow-2xl shadow-black/20">
           <CardContent className="pt-6">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="bg-brand/15 text-brand p-2 rounded-xl">
+            <div className="flex items-center gap-2.5 mb-6">
+              <div className="bg-gradient-to-br from-brand to-brand-dark text-white p-2 rounded-xl shadow-glow">
                 <Wallet size={22} />
               </div>
-              <h1 className="text-xl font-semibold">{t('auth.appName')}</h1>
+              <h1 className="font-heading text-xl font-semibold">{t('auth.appName')}</h1>
             </div>
 
             <h2 className="text-lg font-medium mb-1">{mode === 'login' ? t('auth.welcomeBack') : t('auth.createAccount')}</h2>
@@ -85,6 +100,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
               {error && <p className="text-sm text-destructive">{error}</p>}
 
               <Button type="submit" disabled={submitting} className="w-full">
+                {submitting && <Loader2 size={16} className="animate-spin" />}
                 {submitting ? t('auth.pleaseWait') : mode === 'login' ? t('auth.login') : t('auth.register')}
               </Button>
             </form>

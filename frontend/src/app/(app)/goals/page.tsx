@@ -10,6 +10,7 @@ import GoalProgressCard from '@/components/GoalProgressCard';
 import ProjectionsPanel from '@/components/ProjectionsPanel';
 import SuggestionsPanel from '@/components/SuggestionsPanel';
 import ShareGoalPanel from '@/components/ShareGoalPanel';
+import PageLoader from '@/components/PageLoader';
 import { Card, CardContent } from '@/components/ui/card';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { useCurrency } from '@/lib/currency-context';
@@ -84,14 +85,14 @@ export default function GoalsPage() {
   const selectedGoal = goals.find((g) => g._id === selectedId);
 
   if (loading) {
-    return <div className="text-sm text-muted-foreground">{t('goals.loading')}</div>;
+    return <PageLoader label={t('goals.loading')} />;
   }
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">{t('goals.title')}</h1>
-        <p className="text-sm text-muted-foreground">{t('goals.subtitle')}</p>
+        <h1 className="text-2xl md:text-3xl font-semibold">{t('goals.title')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('goals.subtitle')}</p>
       </div>
 
       <motion.div variants={cardVariants}>
@@ -107,7 +108,9 @@ export default function GoalsPage() {
       </motion.div>
 
       {goals.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t('goals.noGoals')}</p>
+        <p className="text-sm text-muted-foreground text-center py-8 border border-dashed border-surface-border rounded-xl">
+          {t('goals.noGoals')}
+        </p>
       ) : (
         <>
           <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

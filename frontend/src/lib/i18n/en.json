@@ -1,4 +1,5 @@
 {
+  "common.loading": "Loading your finances…",
   "nav.dashboard": "Dashboard",
   "nav.transactions": "Transactions",
   "nav.goals": "Goals",
@@ -78,6 +79,7 @@
   "goals.sharedBy": "Shared by {name}",
   "goals.invite": "Invite",
   "goals.inviteEmailPlaceholder": "Invite by email",
+  "goals.removeCollaborator": "Remove collaborator",
 
   "projections.averageRate": "Average savings rate",
   "projections.weightedTrend": "Weighted recent-trend",
@@ -97,6 +99,7 @@
 
   "budgets.title": "Budgets",
   "budgets.noBudgets": "No budgets set yet — add one below to track spending against a limit.",
+  "budgets.over": "Over",
   "budgets.category": "Category",
   "budgets.limit": "Monthly limit",
 

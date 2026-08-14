@@ -20,19 +20,30 @@ export default function SuggestionsPanel({ suggestions }: { suggestions: string[
             <div className="bg-brand/15 text-brand p-1.5 rounded-lg">
               <Sparkles size={16} />
             </div>
-            <p className="text-sm text-muted-foreground">{t('suggestions.title')}</p>
+            <p className="font-heading text-sm font-medium text-muted-foreground">{t('suggestions.title')}</p>
           </div>
           {suggestions.length > 0 ? (
-            <ul className="space-y-3">
+            <motion.ul
+              className="space-y-2"
+              initial="hidden"
+              animate="visible"
+              variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
+            >
               {suggestions.map((s, i) => (
-                <li key={i} className="text-sm leading-relaxed flex gap-2">
-                  <span className="text-brand">•</span>
+                <motion.li
+                  key={i}
+                  variants={{ hidden: { opacity: 0, x: -8 }, visible: { opacity: 1, x: 0 } }}
+                  className="text-sm leading-relaxed flex gap-2.5 rounded-lg bg-surface/60 border border-surface-border px-3 py-2.5"
+                >
+                  <Sparkles size={14} className="text-brand shrink-0 mt-0.5" />
                   <span>{s}</span>
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
           ) : (
-            <p className="text-sm text-muted-foreground">{t('suggestions.empty')}</p>
+            <p className="text-sm text-muted-foreground text-center py-6 border border-dashed border-surface-border rounded-xl">
+              {t('suggestions.empty')}
+            </p>
           )}
         </CardContent>
       </Card>

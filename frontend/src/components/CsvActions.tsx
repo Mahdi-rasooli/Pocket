@@ -49,20 +49,27 @@ export default function CsvActions({ exportUrl, importUrl, filename, onImported 
   }
 
   return (
-    <div className="flex items-center gap-1">
-      <Button type="button" variant="ghost" size="sm" className="h-auto py-1 px-2 text-xs text-muted-foreground" onClick={handleExport}>
-        <Download size={13} /> {t('csv.export')}
-      </Button>
-      <Button
-        type="button" variant="ghost" size="sm" className="h-auto py-1 px-2 text-xs text-muted-foreground"
-        disabled={importing}
-        onClick={() => fileInputRef.current?.click()}
-      >
-        <Upload size={13} /> {importing ? t('csv.importing') : t('csv.import')}
-      </Button>
+    <div className="flex items-center gap-2">
+      <div className="flex items-center gap-0.5 rounded-lg border border-surface-border bg-surface/60 p-0.5">
+        <Button
+          type="button" variant="ghost" size="sm"
+          className="h-auto py-1 px-2 text-xs text-muted-foreground rounded-md hover:text-brand hover:bg-brand/10"
+          onClick={handleExport}
+        >
+          <Download size={13} /> {t('csv.export')}
+        </Button>
+        <Button
+          type="button" variant="ghost" size="sm"
+          className="h-auto py-1 px-2 text-xs text-muted-foreground rounded-md hover:text-brand hover:bg-brand/10"
+          disabled={importing}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <Upload size={13} /> {importing ? t('csv.importing') : t('csv.import')}
+        </Button>
+      </div>
       <input ref={fileInputRef} type="file" accept=".csv,text/csv" hidden onChange={handleFileChange} />
       {result && (
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-muted-foreground bg-surface-card border border-surface-border rounded-full px-2 py-0.5">
           {t('csv.imported').replace('{n}', String(result.imported))}
           {result.errors.length > 0 && ` · ${t('csv.rowsSkipped').replace('{n}', String(result.errors.length))}`}
         </span>

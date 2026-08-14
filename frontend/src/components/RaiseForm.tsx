@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import { motion } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,7 +36,13 @@ export default function RaiseForm({ currentAmount, onSubmit, onCancel }: Props) 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-2 bg-surface border border-surface-border rounded-lg p-3 mt-2">
+    <motion.form
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+      onSubmit={handleSubmit}
+      className="flex flex-wrap items-end gap-2 bg-surface border-l-2 border-l-brand border-y border-r border-surface-border rounded-lg p-3 mt-2 overflow-hidden"
+    >
       <div className="space-y-1.5">
         <Label className="text-xs text-muted-foreground invisible" aria-hidden>&nbsp;</Label>
         <div className="h-9 flex items-center">
@@ -74,6 +81,6 @@ export default function RaiseForm({ currentAmount, onSubmit, onCancel }: Props) 
         </div>
         <FieldHelper />
       </div>
-    </form>
+    </motion.form>
   );
 }

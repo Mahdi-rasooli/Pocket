@@ -1,4 +1,5 @@
 {
+  "common.loading": "Chargement de vos finances…",
   "nav.dashboard": "Tableau de bord",
   "nav.transactions": "Transactions",
   "nav.goals": "Objectifs",
@@ -78,6 +79,7 @@
   "goals.sharedBy": "Partagé par {name}",
   "goals.invite": "Inviter",
   "goals.inviteEmailPlaceholder": "Inviter par e-mail",
+  "goals.removeCollaborator": "Retirer le collaborateur",
 
   "projections.averageRate": "Taux d'épargne moyen",
   "projections.weightedTrend": "Tendance récente pondérée",
@@ -97,6 +99,7 @@
 
   "budgets.title": "Budgets",
   "budgets.noBudgets": "Aucun budget défini pour l'instant — ajoutez-en un ci-dessous.",
+  "budgets.over": "Dépassé",
   "budgets.category": "Catégorie",
   "budgets.limit": "Limite mensuelle",
 

@@ -19,9 +19,9 @@ function ProjectionRow({ label, monthsRemaining, etaDate, monthlySavingsRate, no
     <div className="flex items-center justify-between py-2 border-b border-surface-border last:border-0">
       <div>
         <p className="text-sm">{label}</p>
-        <p className="text-xs text-muted-foreground">{format(monthlySavingsRate)}/mo</p>
+        <p className="text-xs text-muted-foreground tabular-nums">{format(monthlySavingsRate)}/mo</p>
       </div>
-      <p className="text-sm font-medium text-right">
+      <p className="text-sm font-medium text-right tabular-nums">
         {monthsRemaining != null ? `${monthsRemaining} ${monthUnit}` : notAvailable}
         {etaDate && <span className="block text-xs text-muted-foreground">{etaDate}</span>}
       </p>
@@ -42,7 +42,7 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
         <CardContent className="pt-6">
           <div className="flex items-center gap-2 mb-2">
             <div className="bg-brand/15 text-brand p-1.5 rounded-lg"><TrendingUp size={16} /></div>
-            <p className="text-sm text-muted-foreground">{t('projections.averageRate')}</p>
+            <p className="font-heading text-sm font-medium text-muted-foreground">{t('projections.averageRate')}</p>
           </div>
           <ProjectionRow
             label={t('projections.averageRate')}
@@ -59,7 +59,7 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
         <CardContent className="pt-6">
           <div className="flex items-center gap-2 mb-2">
             <div className="bg-sky-500/15 text-sky-400 p-1.5 rounded-lg"><LineChartIcon size={16} /></div>
-            <p className="text-sm text-muted-foreground">{t('projections.weightedTrend')}</p>
+            <p className="font-heading text-sm font-medium text-muted-foreground">{t('projections.weightedTrend')}</p>
           </div>
           <ProjectionRow
             label={t('projections.weightedTrend')}
@@ -76,7 +76,7 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
         <CardContent className="pt-6">
           <div className="flex items-center gap-2 mb-2">
             <div className="bg-purple-500/15 text-purple-400 p-1.5 rounded-lg"><GitBranch size={16} /></div>
-            <p className="text-sm text-muted-foreground">{bestWorstCase.label}</p>
+            <p className="font-heading text-sm font-medium text-muted-foreground">{bestWorstCase.label}</p>
           </div>
           <ProjectionRow
             label={t('projections.optimistic')}
@@ -102,21 +102,26 @@ export default function ProjectionsPanel({ projections }: { projections: GoalPro
         <CardContent className="pt-6">
           <div className="flex items-center gap-2 mb-2">
             <div className="bg-amber-500/15 text-amber-400 p-1.5 rounded-lg"><Scissors size={16} /></div>
-            <p className="text-sm text-muted-foreground">{t('projections.categoryCuts')}</p>
+            <p className="font-heading text-sm font-medium text-muted-foreground">{t('projections.categoryCuts')}</p>
           </div>
           {categoryCuts.length > 0 ? categoryCuts.map((c) => (
-            <div key={c.category} className="flex items-center justify-between py-2 border-b border-surface-border last:border-0">
+            <div
+              key={c.category}
+              className="flex items-center justify-between py-2 px-2 -mx-2 rounded-lg border-b border-surface-border last:border-0 transition-colors hover:bg-surface-card/60"
+            >
               <div>
                 <p className="text-sm">{formatCategory(c.category, t)}</p>
-                <p className="text-xs text-muted-foreground">{t('projections.cut')} {c.cutPercent}% · {t('projections.avg')} {format(c.avgMonthlySpend)}/mo</p>
+                <p className="text-xs text-muted-foreground tabular-nums">{t('projections.cut')} {c.cutPercent}% · {t('projections.avg')} {format(c.avgMonthlySpend)}/mo</p>
               </div>
-              <p className="text-sm font-medium text-right">
+              <p className="text-sm font-medium text-right tabular-nums">
                 {c.newMonthsRemaining} {monthUnit}
                 {c.monthsSaved != null && <span className="block text-xs text-brand">-{c.monthsSaved} {monthUnit}</span>}
               </p>
             </div>
           )) : (
-            <p className="text-sm text-muted-foreground">{t('projections.noDiscretionary')}</p>
+            <p className="text-sm text-muted-foreground text-center py-6 border border-dashed border-surface-border rounded-xl">
+              {t('projections.noDiscretionary')}
+            </p>
           )}
         </CardContent>
       </Card>
